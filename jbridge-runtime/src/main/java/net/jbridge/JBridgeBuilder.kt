@@ -54,7 +54,6 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>) {
             } catch (e: IllegalAccessException) {
                 throw RuntimeException("Cannot access the constructor" + cls.canonicalName)
             } catch (e: InstantiationException) {
-                e.printStackTrace()
                 throw RuntimeException("Failed to create an instance of " + cls.canonicalName)
             }
 
