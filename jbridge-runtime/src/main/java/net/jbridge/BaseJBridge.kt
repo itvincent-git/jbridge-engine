@@ -10,15 +10,9 @@ import java.lang.ref.WeakReference
  * Created by zhongyongsheng on 2018/7/20.
  */
 abstract class BaseJBridge {
-    lateinit var activityRef: WeakReference<Activity?>
-    lateinit var supportFragmentRef: WeakReference<Fragment?>
-    lateinit var viewRef: WeakReference<View?>
-    lateinit var callback : JBridgeCallback
+    lateinit var bridgeContext: JBridgeContext
 
     fun init(activity: Activity?, supportFragment: Fragment?, view: View?, cb: JBridgeCallback) {
-        activityRef = WeakReference(activity)
-        supportFragmentRef = WeakReference(supportFragment)
-        viewRef = WeakReference(view)
-        callback = cb
+        bridgeContext = JBridgeContext(activity, supportFragment, view, cb)
     }
 }

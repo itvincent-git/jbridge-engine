@@ -18,11 +18,11 @@ import net.jbridge.sample.interfacepack.DogBridgeInterface
  */
 @JBridge
 abstract class MainJBridge: BaseJBridge() {
-
+    lateinit var dog: DogBridgeInterface
 
     @JBridgeMethod
     fun getDogBridge(): DogBridgeInterface {
-        return DogBridgeImpl()
+        return dog
     }
 
     @JBridgeMethod
@@ -38,6 +38,10 @@ abstract class MainJBridge: BaseJBridge() {
                     .supportFragment(supportFragment)
                     .view(view)
                     .build()
+                    .apply {
+                        dog = DogBridgeImpl()
+                    }
+
         }
     }
 }

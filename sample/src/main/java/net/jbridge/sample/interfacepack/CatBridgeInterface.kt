@@ -1,8 +1,7 @@
 package net.jbridge.sample.interfacepack
 
-import android.app.Activity
+import net.jbridge.JBridgeContext
 import net.jbridge.annotation.Js2JBridge
-import net.jbridge.common.JBridgeCallback
 
 /**
  * Created by zhongyongsheng on 2018/7/20.
@@ -10,5 +9,5 @@ import net.jbridge.common.JBridgeCallback
 @Js2JBridge
 interface CatBridgeInterface {
 
-    fun callCat(activity: Activity?, callback: JBridgeCallback, index : Int, name: String, times: Long)
+    fun callCat(bridgeContext: JBridgeContext, index : Int, name: String, times: Long)
 }

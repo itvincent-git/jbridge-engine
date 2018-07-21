@@ -9,7 +9,7 @@ public class MainJBridge_Impl extends MainJBridge {
 
     @JavascriptInterface
     public void callCat(int index, String name, long times) {
-        getCatBridge().callCat(activityRef.get(), callback, index, name, times);
+        getCatBridge().callCat(bridgeContext, index, name, times);
     }
 
     @JavascriptInterface
