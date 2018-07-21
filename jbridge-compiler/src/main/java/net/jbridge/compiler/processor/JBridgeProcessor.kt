@@ -1,0 +1,58 @@
+package net.jbridge.compiler.processor
+
+import com.google.auto.common.BasicAnnotationProcessor
+import com.google.common.collect.SetMultimap
+import net.jbridge.compiler.common.CompilerContext
+import java.util.*
+import javax.lang.model.SourceVersion
+import javax.lang.model.element.Element
+
+/**
+ * Processor 入口类
+ * Created by zhongyongsheng on 2018/4/13.
+ */
+class JBridgeProcessor : BasicAnnotationProcessor() {
+    internal var portContext: CompilerContext? = null
+    override fun initSteps(): Iterable<BasicAnnotationProcessor.ProcessingStep> {
+        portContext = CompilerContext(processingEnv)
+        CompilerContext.defaultIntance = portContext
+        return Arrays.asList(JBridgeProcessingStep(portContext!!))
+    }
+
+    override fun getSupportedSourceVersion(): SourceVersion {
+        return SourceVersion.latest()
+    }
+
+    internal inner class JBridgeProcessingStep(context: CompilerContext) : JBridgeProcessing() {
+
+        init {
+            compilerContext = context
+        }
+
+        override fun annotations(): Set<Class<out Annotation>> {
+            val set = HashSet<Class<out Annotation>>()
+//            set.add(ProtoQueueClass::class.java)
+            return set
+        }
+
+        override fun process(elementsByAnnotation: SetMultimap<Class<out Annotation>, Element>): Set<Element> {
+//            val classSet = elementsByAnnotation.get(ProtoQueueClass::class.java)
+//            classSet.map { element ->
+//                JBridgeInterfaceProcessor(compilerContext!!, Util.toTypeElement(element)).process()
+//            }
+//            .forEach {
+//                try {
+//                    ProtoQueueClassWriter(it).write(processingEnv)
+//                } catch (e: Throwable) {
+//                    portContext!!.log.error("ProtoQueueClassWriter error %s", e.message ?: "")
+//                }
+//            }
+
+            return HashSet()
+        }
+    }
+
+    internal abstract inner class JBridgeProcessing : BasicAnnotationProcessor.ProcessingStep {
+        var compilerContext: CompilerContext? = null
+    }
+}

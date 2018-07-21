@@ -1,0 +1,24 @@
+apply plugin: 'java-library'
+apply plugin: 'maven'
+apply plugin: 'kotlin'
+group = 'com.github.itvincent-git'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+apply plugin: 'com.novoda.bintray-release'//添加
+
+publish {
+    userOrg = "$user_org"//bintray.com用户名
+    groupId = "$group_id"//jcenter上的路径
+    artifactId = 'jbridge-common'//项目名称
+    publishVersion = "$release_version"//版本号
+    desc = 'common dependency'//描述，不重要
+    website = "$url"//网站
+}

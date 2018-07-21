@@ -1,0 +1,4 @@
+include ':sample',
+        ':jbridge-runtime',
+        ':jbridge-common',
+        ':jbridge-compiler'
