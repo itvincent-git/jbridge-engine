@@ -8,5 +8,5 @@ import net.jbridge.annotation.Js2JBridge
 @Js2JBridge
 interface CatBridgeInterface {
 
-    fun callCat(int : Int, str: String, long: Long)
+    fun callCat(index : Int, name: String, times: Long)
 }

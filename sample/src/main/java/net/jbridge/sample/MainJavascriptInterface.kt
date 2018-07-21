@@ -15,6 +15,11 @@ abstract class MainJavascriptInterface: BaseJBridge() {
         return DogBridgeImpl()
     }
 
+    @JBridgeMethod
+    fun getCatBridge(): CatBridgeInterface {
+        return CatBridgeImpl()
+    }
+
     companion object {
         @JvmStatic
         val instance: MainJavascriptInterface by lazy {
