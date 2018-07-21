@@ -1,6 +1,7 @@
-package net.jbridge.sample
+package net.jbridge.sample.interfacepack
 
 import android.widget.Toast
+import net.jbridge.sample.SampleApplication
 
 /**
  * Created by zhongyongsheng on 2018/7/20.

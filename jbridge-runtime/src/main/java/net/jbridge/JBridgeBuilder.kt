@@ -1,29 +1,36 @@
 package net.jbridge
 
+import android.app.Activity
+import android.support.v4.app.Fragment
+import android.view.View
+import net.jbridge.common.JBridgeCallback
+
 /**
  * Created by zhongyongsheng on 2018/7/20.
  */
-class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>) {
-//    private val mBridgeImpls = HashMap<Class<*>, Any>()
-//
-//    fun <T> addImpl(interfaceClass: Class<T>, impl: T): JBridgeBuilder {
-//        mBridgeImpls[interfaceClass] = impl as Any
-//        return this
-//    }
-//
-//    fun <T> getImpl(interfaceClass: Class<T>): T {
-//        return mBridgeImpls[interfaceClass] as T
-//    }
-//
-//    fun buildJavascriptInterface(): Any {
-//        val javascriptInterface = JBridgeJavascriptInterface_Impl()
-//
-//        val implementation = getGeneratedImplementation<T, T>(mTransformerClass, IMPL_SUFFIX)
-//    }
+class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>, val mCallback: JBridgeCallback) {
+    var mActivity: Activity? = null
+    var mSupportFragment: Fragment? = null
+    var mView: View? = null
+
+    fun activity(activity: Activity?): JBridgeBuilder<T> {
+        mActivity = activity
+        return this
+    }
+
+    fun supportFragment(fragment: Fragment?): JBridgeBuilder<T> {
+        mSupportFragment = fragment
+        return this
+    }
+
+    fun view(view: View?): JBridgeBuilder<T> {
+        mView = view
+        return this
+    }
 
     fun build(): T {
         val implementation = getGeneratedImplementation<T>(mTransformerClass, IMPL_SUFFIX)
-        //implementation.init(mSender)
+        implementation.init(mActivity, mSupportFragment, mView, mCallback)
         return implementation
     }
 
@@ -31,8 +38,8 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>) {
         private val IMPL_SUFFIX = "_Impl"
 
         fun <T : BaseJBridge> newBuilder(
-                cls: Class<T>): JBridgeBuilder<T> {
-            return JBridgeBuilder(cls)
+                cls: Class<T>, callback: JBridgeCallback): JBridgeBuilder<T> {
+            return JBridgeBuilder(cls, callback)
         }
 
         internal fun <T> getGeneratedImplementation(cls: Class<T>, suffix: String): T {

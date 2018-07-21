@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
+import net.jbridge.WebviewCallback
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +17,6 @@ class MainActivity : AppCompatActivity() {
 
         web_wv.settings.javaScriptEnabled = true
         web_wv.settings.builtInZoomControls = false
-        web_wv.addJavascriptInterface(MainJBridge.LAZY_INSTANCE, "nativeApp")
         web_wv.webViewClient = object: WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 url?.let {
@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         }
+        //****define JavascriptInterface***
+        web_wv.addJavascriptInterface(MainJBridge.newInstance(this, null, web_wv, WebviewCallback(web_wv)), "nativeApp")
+        //*******
         web_wv.loadUrl("file:///android_asset/index.html")
     }
 }

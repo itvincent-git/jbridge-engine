@@ -1,4 +1,4 @@
-package net.jbridge.sample
+package net.jbridge.sample.interfacepack
 
 import net.jbridge.annotation.Js2JBridge
 

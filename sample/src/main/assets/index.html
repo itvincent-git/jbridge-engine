@@ -1,13 +1,17 @@
 <html>
 <head>
     <script>
-
+        function onCallback(value) {
+            var text = document.getElementById("text")
+            text.innerHTML = text.innerHTML + "\n" + value
+        }
     </script>
 <body>
     this is the sample
     <p/>
     <button type="button" onclick="javascript:window.nativeApp.callCat(1, 'abcd', 12345678)">callCat</button>
     <button type="button" onclick="javascript:window.nativeApp.callDog(2, 'efgh', 98765)">callDog</button>
+    <div id="text"></div>
 </body>
 </head>
 </html>
