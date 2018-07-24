@@ -8,7 +8,7 @@ import net.jbridge.common.JBridgeCallback
 /**
  * Created by zhongyongsheng on 2018/7/20.
  */
-class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>, val mCallback: JBridgeCallback) {
+class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>/*, val mCallback: JBridgeCallback*/) {
     var mActivity: Activity? = null
     var mSupportFragment: Fragment? = null
     var mView: View? = null
@@ -30,7 +30,7 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>, val mCallb
 
     fun build(): T {
         val implementation = getGeneratedImplementation<T>(mTransformerClass, IMPL_SUFFIX)
-        implementation.init(mActivity, mSupportFragment, mView, mCallback)
+        implementation.init(mActivity, mSupportFragment, mView/*, mCallback*/)
         return implementation
     }
 
@@ -38,8 +38,8 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>, val mCallb
         private val IMPL_SUFFIX = "_Impl"
 
         fun <T : BaseJBridge> newBuilder(
-                cls: Class<T>, callback: JBridgeCallback): JBridgeBuilder<T> {
-            return JBridgeBuilder(cls, callback)
+                cls: Class<T>/*, callbackClass: Class<JBridgeCallback>*/): JBridgeBuilder<T> {
+            return JBridgeBuilder(cls/*, callback*/)
         }
 
         internal fun <T> getGeneratedImplementation(cls: Class<T>, suffix: String): T {

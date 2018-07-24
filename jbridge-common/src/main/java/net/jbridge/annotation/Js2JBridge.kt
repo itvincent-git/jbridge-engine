@@ -5,5 +5,4 @@ package net.jbridge.annotation
  */
 @Retention(AnnotationRetention.BINARY)
 @Target(AnnotationTarget.CLASS)
-annotation class Js2JBridge {
-}
+annotation class Js2JBridge

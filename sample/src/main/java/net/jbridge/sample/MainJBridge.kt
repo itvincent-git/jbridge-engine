@@ -8,17 +8,15 @@ import net.jbridge.JBridgeBuilder
 import net.jbridge.annotation.JBridge
 import net.jbridge.annotation.JBridgeMethod
 import net.jbridge.common.JBridgeCallback
-import net.jbridge.sample.interfacepack.CatBridgeImpl
-import net.jbridge.sample.interfacepack.CatBridgeInterface
-import net.jbridge.sample.interfacepack.DogBridgeImpl
-import net.jbridge.sample.interfacepack.DogBridgeInterface
+import net.jbridge.sample.interfacepack.*
 
 /**
  * Created by zhongyongsheng on 2018/7/20.
  */
 @JBridge
 abstract class MainJBridge: BaseJBridge() {
-    lateinit var dog: DogBridgeInterface
+    var dog: DogBridgeInterface = DogBridgeImpl()
+    var cat: CatBridgeInterface = CatBridgeImpl()
 
     @JBridgeMethod
     fun getDogBridge(): DogBridgeInterface {
@@ -27,20 +25,19 @@ abstract class MainJBridge: BaseJBridge() {
 
     @JBridgeMethod
     fun getCatBridge(): CatBridgeInterface {
-        return CatBridgeImpl()
+        return cat
     }
+
+    abstract fun getToJsInterface(): ToJsInterface
 
     companion object {
         @JvmStatic
-        fun newInstance(activity: Activity?, supportFragment: Fragment?, view: View?, callback: JBridgeCallback): MainJBridge {
-            return JBridgeBuilder.newBuilder(MainJBridge::class.java, callback)
+        fun newInstance(activity: Activity?, supportFragment: Fragment?, view: View?): MainJBridge {
+            return JBridgeBuilder.newBuilder(MainJBridge::class.java)
                     .activity(activity)
                     .supportFragment(supportFragment)
                     .view(view)
                     .build()
-                    .apply {
-                        dog = DogBridgeImpl()
-                    }
 
         }
     }

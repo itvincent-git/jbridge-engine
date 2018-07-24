@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_main.*
-import net.jbridge.WebviewCallback
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //****define JavascriptInterface***
-        web_wv.addJavascriptInterface(MainJBridge.newInstance(this, null, web_wv, WebviewCallback(web_wv)), "nativeApp")
+        web_wv.addJavascriptInterface(MainJBridge.newInstance(this, null, web_wv), "nativeApp")
         //*******
         web_wv.loadUrl("file:///android_asset/index.html")
     }
