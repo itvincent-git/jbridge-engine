@@ -1,53 +1,43 @@
 package net.jbridge.compiler.processor
 
 
+import net.jbridge.annotation.JBridge2Js
+import net.jbridge.annotation.JBridgeMethod
+import net.jbridge.annotation.Js2JBridge
 import net.jbridge.compiler.common.CompilerContext
+import net.jbridge.compiler.data.JBridgeData
+import net.jbridge.util.Util
+import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
 
 /**
  * Created by zhongyongsheng on 2018/4/14.
  */
-class JBridgeInterfaceProcessor internal constructor(internal var compileContext: CompilerContext, internal var classElement: TypeElement) {
+class JBridgeInterfaceProcessor internal constructor(internal var compileContext: CompilerContext,
+                                                     internal var classElement: TypeElement) {
 
 
-//    internal fun process(): ProtoQueueClassData {
-//        val annotationMirror = Util.getAnnotationMirror(classElement, ProtoQueueClass::class.java)
-//
-//        val protoContextLiteral = Util.getAnnotationValue(annotationMirror, "protoContextLiteral").toString()
-//        val toByteArrayLiteral = Util.getAnnotationValue(annotationMirror, "toByteArrayLiteral").toString()
-//        val buildProtoLiteral = Util.getAnnotationValue(annotationMirror, "buildProtoLiteral").toString()
-//        val uriLiteral = Util.getAnnotationValue(annotationMirror, "uriLiteral").toString()
-//        val superClass = classElement.superclass
-//        val declaredType = Util.asDeclared(superClass)
-//        val typeArguments = declaredType.typeArguments
-//
-//        if (typeArguments.size < 2) {
-//            compileContext.log.error(classElement, "must defined the type arguments <P,C>")
-//        }
-//
-//        val allMembers = Util.getAllMembers(compileContext.processingEnvironment, classElement)
-//        val overrideMethods = allMembers
-//                .filter({ element -> element.modifiers.contains(Modifier.ABSTRACT) && element.kind == ElementKind.METHOD })
-//                .map {
-//                    Util.asExecutable(it)
-//                }
-//                .map { it.toString() to it }.toMap()
-//
-//        var data = ProtoQueueClassData(classElement,
-//                protoContextLiteral.filter { it != '\"' },
-//                buildProtoLiteral.filter { it != '\"' },
-//                toByteArrayLiteral.filter { it != '\"' },
-//                uriLiteral.filter { it != '\"' },
-//                typeArguments[0],
-//                typeArguments[1],
-//                overrideMethods["buildProto(byte[])"],
-//                overrideMethods["toByteArray(P)"],
-//                overrideMethods["getProtoContext(P)"],
-//                overrideMethods["getOwnAppId()"],
-//                overrideMethods["incrementAndGetSeqContext()"],
-//                overrideMethods["getSeqContext()"],
-//                overrideMethods["getReceiveUri(P)"])
-//        compileContext.log.debug("ProtoQueue process %s:%s", classElement.toString(), data)
-//        return data
-//    }
+    internal fun process(): JBridgeData {
+        val allMembers = Util.getAllMembers(compileContext.processingEnvironment, classElement)
+        val js2BridgeMethods = allMembers
+                .filter { element ->
+                    element.kind == ElementKind.METHOD && element.getAnnotation(JBridgeMethod::class.java) != null
+                }
+                .map {
+                    //compileContext.log.debug("Js2JBridge method %s", it.toString())
+                    var excutableElement = Util.asExecutable(it)
+                    val bridgeInterface = Util.toTypeElement(excutableElement.returnType)
+
+                    if (bridgeInterface.getAnnotation(Js2JBridge::class.java) != null) {
+                        val js2bridgeData = Js2JBridgeProcessor(compileContext, bridgeInterface).process()
+                    } else if (bridgeInterface.getAnnotation(JBridge2Js::class.java) != null) {
+
+                    }
+
+                }
+
+        return JBridgeData(classElement).apply {
+            compileContext.log.debug("JBridge process %s:%s", classElement.toString(), this)
+        }
+    }
 }

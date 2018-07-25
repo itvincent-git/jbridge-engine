@@ -2,7 +2,11 @@ package net.jbridge.compiler.processor
 
 import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
+import net.jbridge.annotation.JBridge
 import net.jbridge.compiler.common.CompilerContext
+import net.jbridge.compiler.writer.JBridgeBaseWriter
+import net.jbridge.compiler.writer.JBridgeClassWriter
+import net.jbridge.util.Util
 import java.util.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
@@ -16,7 +20,7 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
     override fun initSteps(): Iterable<BasicAnnotationProcessor.ProcessingStep> {
         portContext = CompilerContext(processingEnv)
         CompilerContext.defaultIntance = portContext
-        return Arrays.asList(JBridgeProcessingStep(portContext!!))
+        return listOf(JBridgeProcessingStep(portContext!!))
     }
 
     override fun getSupportedSourceVersion(): SourceVersion {
@@ -31,22 +35,22 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
 
         override fun annotations(): Set<Class<out Annotation>> {
             val set = HashSet<Class<out Annotation>>()
-//            set.add(ProtoQueueClass::class.java)
+            set.add(JBridge::class.java)
             return set
         }
 
         override fun process(elementsByAnnotation: SetMultimap<Class<out Annotation>, Element>): Set<Element> {
-//            val classSet = elementsByAnnotation.get(ProtoQueueClass::class.java)
-//            classSet.map { element ->
-//                JBridgeInterfaceProcessor(compilerContext!!, Util.toTypeElement(element)).process()
-//            }
-//            .forEach {
-//                try {
-//                    ProtoQueueClassWriter(it).write(processingEnv)
-//                } catch (e: Throwable) {
-//                    portContext!!.log.error("ProtoQueueClassWriter error %s", e.message ?: "")
-//                }
-//            }
+            val classSet = elementsByAnnotation.get(JBridge::class.java)
+            classSet.map { element ->
+                JBridgeInterfaceProcessor(compilerContext!!, Util.toTypeElement(element)).process()
+            }
+            .forEach {
+                try {
+                    JBridgeClassWriter(it).write(processingEnv)
+                } catch (e: Throwable) {
+                    portContext!!.log.error("JBridgeProcessingStep error %s", e.message ?: "")
+                }
+            }
 
             return HashSet()
         }
