@@ -3,7 +3,6 @@ package net.jbridge
 import android.app.Activity
 import android.support.v4.app.Fragment
 import android.view.View
-import net.jbridge.common.JBridgeCallback
 import java.lang.ref.WeakReference
 
 /**

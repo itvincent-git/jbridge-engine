@@ -7,7 +7,6 @@ import net.jbridge.BaseJBridge
 import net.jbridge.JBridgeBuilder
 import net.jbridge.annotation.JBridge
 import net.jbridge.annotation.JBridgeMethod
-import net.jbridge.common.JBridgeCallback
 import net.jbridge.sample.interfacepack.*
 
 /**
@@ -28,6 +27,7 @@ abstract class MainJBridge: BaseJBridge() {
         return cat
     }
 
+    @JBridgeMethod
     abstract fun getToJsInterface(): ToJsInterface
 
     companion object {
