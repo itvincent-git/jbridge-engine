@@ -9,7 +9,7 @@ import net.jbridge.common.JBridgeCallback
 /**
  * Created by zhongyongsheng on 2018/7/21.
  */
-open class WebviewCallback(view: View) : JBridgeCallback {
+open class WebViewCallback(view: View) : JBridgeCallback {
     val handler = Handler(Looper.getMainLooper())
     var webView: WebView? = null
 

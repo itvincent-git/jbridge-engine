@@ -4,7 +4,7 @@ import android.webkit.JavascriptInterface;
 
 import net.jbridge.JBridgeContext;
 import net.jbridge.sample.interfacepack.ToJsInterface;
-import net.jbridge.sample.interfacepack.ToJsInterface_WebviewCallback_Impl;
+import net.jbridge.sample.interfacepack.ToJsInterface_WebViewCallback_Impl;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +32,7 @@ public class MainJBridge_Impl extends MainJBridge {
         } else {
             synchronized(this) {
                 if (_toJsInterface == null) {
-                    _toJsInterface = new ToJsInterface_WebviewCallback_Impl(bridgeContext.getViewRef().get());
+                    _toJsInterface = new ToJsInterface_WebViewCallback_Impl(bridgeContext.getViewRef().get());
                 }
                 return _toJsInterface;
             }
