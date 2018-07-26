@@ -5,9 +5,10 @@ import javax.lang.model.element.TypeElement
 import javax.lang.model.type.DeclaredType
 
 /**
+ * 保存@Js2JBridge 接口类的数据
  * Created by zhongyongsheng on 2018/7/25.
  */
-class Js2JBridgeData(val element:TypeElement, val declaredType: DeclaredType/*, List<PortMethod> methods*/) {
+class Js2JBridgeData(val element:TypeElement, val declaredType: DeclaredType, val methods:List<Js2JBridgeInterfaceMethod> ) {
 
     var implTypeName: ClassName
     var typeName: ClassName

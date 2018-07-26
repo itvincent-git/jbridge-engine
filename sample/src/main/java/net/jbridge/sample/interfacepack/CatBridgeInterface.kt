@@ -11,4 +11,6 @@ import net.jbridge.sample.MainJBridge
 interface CatBridgeInterface {
 
     fun callCat(bridgeContext: JBridgeContext<MainJBridge>, index : Int, name: String, times: Long)
+
+    fun getCatCount(type: String)
 }

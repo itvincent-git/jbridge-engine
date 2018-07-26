@@ -3,6 +3,7 @@ package net.jbridge.util
 import com.google.auto.common.AnnotationMirrors
 import com.google.auto.common.MoreElements
 import com.google.auto.common.MoreTypes
+import com.squareup.javapoet.TypeName
 
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.AnnotationMirror
@@ -110,4 +111,10 @@ object Util {
         return TO_TYPE.visit(annotationValue)
     }
 
+    /**
+     * TypeMirror转成javapoet的TypeName
+     */
+    fun typeMirrorToTypeName(typeMirror: TypeMirror): TypeName {
+        return TypeName.get(typeMirror)
+    }
 }

@@ -5,12 +5,14 @@ import net.jbridge.annotation.Js2JBridge
 import net.jbridge.compiler.common.CompilerContext
 import net.jbridge.compiler.data.JBridgeData
 import net.jbridge.compiler.data.Js2JBridgeData
+import net.jbridge.compiler.data.Js2JBridgeInterfaceMethod
 import net.jbridge.util.Util
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 
 /**
+ * 处理@Js2JBridge接口类的信息
  * Created by zhongyongsheng on 2018/4/14.
  */
 class Js2JBridgeProcessor internal constructor(internal var compileContext: CompilerContext,
@@ -28,7 +30,12 @@ class Js2JBridgeProcessor internal constructor(internal var compileContext: Comp
 
         val declaredType = Util.asDeclared(js2bridgeInterfaceElement)
 
-        return Js2JBridgeData(js2bridgeInterfaceElement, declaredType).apply {
+        val interfaceMethods = Util.getAllMembers(compileContext.processingEnvironment, js2bridgeInterfaceElement)
+                .filter { it.getModifiers().contains(Modifier.ABSTRACT) && it.getKind().equals(ElementKind.METHOD) }
+                .map { Util.asExecutable(it) }
+                .map { Js2JBridgeInterfaceMethodProcessor(compileContext, it).process() }
+
+        return Js2JBridgeData(js2bridgeInterfaceElement, declaredType, interfaceMethods).apply {
             compileContext.log.debug("Js2JBridge process %s:%s", js2bridgeInterfaceElement.toString(), this)
         }
     }

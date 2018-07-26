@@ -13,7 +13,10 @@ class CatBridgeImpl: CatBridgeInterface {
     override fun callCat(bridgeContext: JBridgeContext<MainJBridge>, index : Int, name: String, times: Long) {
         Toast.makeText(SampleApplication.application, "callCat $index $name $times", Toast.LENGTH_SHORT).show()
         // do something business
-//        bridgeContext.callback.eval("javascript:onCallback('cat callback')")
         bridgeContext.jBridge.getToJsInterface().onCallback("cat callback")
+    }
+
+    override fun getCatCount(type: String) {
+
     }
 }
