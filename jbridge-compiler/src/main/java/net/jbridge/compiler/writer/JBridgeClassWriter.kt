@@ -2,6 +2,8 @@ package net.jbridge.compiler.writer
 
 import com.squareup.javapoet.*
 import net.jbridge.compiler.data.JBridgeData
+import net.jbridge.compiler.data.Js2JBridgeInterfaceMethod
+import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 
 /**
@@ -26,12 +28,9 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
 
                 MethodSpec.methodBuilder(executableElement.simpleName.toString())
                         .addAnnotation(ClassName.get("android.webkit", "JavascriptInterface"))
-                        .addStatement("\$L().\$L(\$L)",
-                                    getMethodElement.simpleName.toString(),//getMethodName
-                                    executableElement.simpleName.toString(),//methodName
-                                    executableElement.parameters.map { it.simpleName }.joinToString())//param list
                         .apply {
-                            executableElement.parameters.forEach {
+                            addJavascriptInterfaceInner(this, getMethodElement, executableElement, interfaceMethod)
+                            interfaceMethod.parameters.forEach {
                                 this.addParameter(ParameterSpec.get(it))
                             }
                             builder.addMethod(this.build())
@@ -39,6 +38,26 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
 
             }
         }
+    }
+
+    fun addJavascriptInterfaceInner(methodSpec: MethodSpec.Builder, getMethodElement:ExecutableElement,
+                                    executableElement: ExecutableElement, interfaceMethod: Js2JBridgeInterfaceMethod) {
+
+
+        if (interfaceMethod.hasJBridgeContext) {
+            methodSpec.addStatement("\$L().\$L((\$T)bridgeContext, \$L)",
+                    getMethodElement.simpleName.toString(),//getMethodName
+                    executableElement.simpleName.toString(),//methodName
+                    ParameterizedTypeName.get(ClassName.get("net.jbridge", "JBridgeContext"),
+                            jbridgeData.typeName),
+                    interfaceMethod.parameters.joinToString { it.simpleName })//param list
+        } else {
+            methodSpec.addStatement("\$L().\$L(\$L)",
+                    getMethodElement.simpleName.toString(),//getMethodName
+                    executableElement.simpleName.toString(),//methodName
+                    interfaceMethod.parameters.joinToString { it.simpleName })//param list
+        }
+
     }
 
 }
