@@ -3,9 +3,9 @@ package net.jbridge
 import android.app.Activity
 import android.support.v4.app.Fragment
 import android.view.View
-import net.jbridge.common.JBridgeCallback
 
 /**
+ * JBridge生成器
  * Created by zhongyongsheng on 2018/7/20.
  */
 class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>/*, val mCallback: JBridgeCallback*/) {
@@ -49,7 +49,7 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>/*, val mCal
                 name
             else
                 name.substring(fullPackage.length + 1)
-            val implName = postPackageName.replace('.', '_') + IMPL_SUFFIX
+            val implName = postPackageName.replace('.', '_') + suffix
             try {
 
                 val aClass = Class.forName(
