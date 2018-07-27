@@ -27,8 +27,8 @@ abstract class MainJBridge: BaseJBridge() {
         return cat
     }
 
-    @JBridgeMethod
-    abstract fun getToJsInterface(): ToJsInterface
+//    @JBridgeMethod
+//    abstract fun getToJsInterface(): ToJsInterface
 
     companion object {
         @JvmStatic

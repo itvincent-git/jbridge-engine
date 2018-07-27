@@ -1,7 +1,6 @@
 package net.jbridge.compiler.processor
 
 
-import net.jbridge.annotation.JBridge2Js
 import net.jbridge.annotation.JBridgeMethod
 import net.jbridge.annotation.Js2JBridge
 import net.jbridge.compiler.common.CompilerContext
@@ -27,19 +26,23 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                 }
                 .map {
                     //compileContext.log.debug("Js2JBridge method %s", it.toString())
-                    var excutableElement = Util.asExecutable(it)
+                    val excutableElement = Util.asExecutable(it)
                     val bridgeInterface = Util.toTypeElement(excutableElement.returnType)
-
-                    if (bridgeInterface.getAnnotation(Js2JBridge::class.java) != null) {
-                        val js2bridgeData = Js2JBridgeProcessor(compileContext, bridgeInterface).process()
-                        val js2JBridgeGetMethod = Js2JBridgeGetMethod(excutableElement, excutableElement.simpleName.toString(), js2bridgeData)
-                    } else if (bridgeInterface.getAnnotation(JBridge2Js::class.java) != null) {
-
-                    }
-
+                    excutableElement to bridgeInterface
+                }
+                .filter {
+                    it.second.getAnnotation(Js2JBridge::class.java) != null
+                }
+                .map {
+                    val js2bridgeData = Js2JBridgeProcessor(compileContext, it.second).process()
+                    Js2JBridgeGetMethod(it.first, it.first.simpleName.toString(), js2bridgeData)
                 }
 
-        return JBridgeData(classElement).apply {
+        /*else if (bridgeInterface.getAnnotation(JBridge2Js::class.java) != null) {
+
+                    }*/
+
+        return JBridgeData(classElement, js2BridgeMethods).apply {
             compileContext.log.debug("JBridge process %s:%s", classElement.toString(), this)
         }
     }
