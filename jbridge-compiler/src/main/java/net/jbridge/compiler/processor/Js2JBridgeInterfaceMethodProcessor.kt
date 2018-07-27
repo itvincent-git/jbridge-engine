@@ -21,18 +21,19 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(internal var compi
                 .filter {
                     val type = it.asType()
                     if (!type.kind.isPrimitive) {
-                        if (Util.toTypeElement(type).qualifiedName.toString() == "net.jbridge.JBridgeContext") {
+                        compileContext.log.debug("Js2JBridgeInterfaceMethodProcessor %s", Util.toTypeElement(type).qualifiedName.toString())
+                        if (Util.toTypeElement(type).qualifiedName.toString() == "net.jbridge.runtime.JBridgeContext") {
                             compileContext.log.debug("Js2JBridgeInterfaceMethodProcessor hasJBridgeContext")
                             hasJBridgeContext = true
                             return@filter false
                         }
                     }
                     true
-                }.apply {
+                }/*.apply {
                     this.forEach {
                         compileContext.log.debug("Js2JBridgeInterfaceMethodProcessor %s", it.simpleName)
                     }
-                }
+                }*/
 
 
 

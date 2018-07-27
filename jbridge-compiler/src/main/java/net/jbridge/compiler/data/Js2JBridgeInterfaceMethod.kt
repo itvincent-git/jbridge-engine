@@ -8,6 +8,6 @@ import javax.lang.model.element.VariableElement
  * Created by zhongyongsheng on 2018/7/25.
  */
 class Js2JBridgeInterfaceMethod(val executableElement: ExecutableElement,
-                                val parameters: List<out VariableElement>,
+                                val parameters: List<out VariableElement>,//已经排除掉jbridgeContext
                                 val hasJBridgeContext: Boolean) {
 }

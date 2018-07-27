@@ -27,10 +27,12 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
                 var getMethodElement = getMethod.element
 
                 MethodSpec.methodBuilder(executableElement.simpleName.toString())
+                        .addModifiers(Modifier.PUBLIC)
                         .addAnnotation(ClassName.get("android.webkit", "JavascriptInterface"))
                         .apply {
                             addJavascriptInterfaceInner(this, getMethodElement, executableElement, interfaceMethod)
                             interfaceMethod.parameters.forEach {
+
                                 this.addParameter(ParameterSpec.get(it))
                             }
                             builder.addMethod(this.build())
@@ -48,7 +50,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
             methodSpec.addStatement("\$L().\$L((\$T)bridgeContext, \$L)",
                     getMethodElement.simpleName.toString(),//getMethodName
                     executableElement.simpleName.toString(),//methodName
-                    ParameterizedTypeName.get(ClassName.get("net.jbridge", "JBridgeContext"),
+                    ParameterizedTypeName.get(ClassName.get("net.jbridge.runtime", "JBridgeContext"),
                             jbridgeData.typeName),
                     interfaceMethod.parameters.joinToString { it.simpleName })//param list
         } else {
