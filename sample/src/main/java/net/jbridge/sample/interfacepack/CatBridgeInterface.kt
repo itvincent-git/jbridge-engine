@@ -1,6 +1,6 @@
 package net.jbridge.sample.interfacepack
 
-import net.jbridge.JBridgeContext
+import net.jbridge.runtime.JBridgeContext
 import net.jbridge.annotation.Js2JBridge
 import net.jbridge.sample.MainJBridge
 

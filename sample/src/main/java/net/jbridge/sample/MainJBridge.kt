@@ -3,8 +3,8 @@ package net.jbridge.sample
 import android.app.Activity
 import android.support.v4.app.Fragment
 import android.view.View
-import net.jbridge.BaseJBridge
-import net.jbridge.JBridgeBuilder
+import net.jbridge.runtime.BaseJBridge
+import net.jbridge.runtime.JBridgeBuilder
 import net.jbridge.annotation.JBridge
 import net.jbridge.annotation.JBridgeMethod
 import net.jbridge.sample.interfacepack.*

@@ -1,4 +1,4 @@
-package net.jbridge
+package net.jbridge.runtime
 
 import android.app.Activity
 import android.support.v4.app.Fragment
@@ -57,7 +57,7 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>/*, val mCal
                 return aClass.newInstance()
             } catch (e: ClassNotFoundException) {
                 throw RuntimeException("cannot find implementation for "
-                        + cls.canonicalName + ". " + implName + " does not exist")
+                        + cls.canonicalName + " " + implName + " does not exist")
             } catch (e: IllegalAccessException) {
                 throw RuntimeException("Cannot access the constructor" + cls.canonicalName)
             } catch (e: InstantiationException) {

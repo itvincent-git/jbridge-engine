@@ -1,4 +1,4 @@
-package net.jbridge
+package net.jbridge.runtime
 
 import android.app.Activity
 import android.support.v4.app.Fragment

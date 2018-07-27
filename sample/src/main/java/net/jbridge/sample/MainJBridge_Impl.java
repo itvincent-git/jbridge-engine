@@ -2,7 +2,7 @@
 //
 //import android.webkit.JavascriptInterface;
 //
-//import net.jbridge.JBridgeContext;
+//import net.jbridge.runtime.JBridgeContext;
 //import net.jbridge.sample.interfacepack.ToJsInterface;
 //import net.jbridge.sample.interfacepack.ToJsInterface_WebViewCallback_Impl;
 //

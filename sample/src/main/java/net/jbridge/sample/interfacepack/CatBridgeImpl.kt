@@ -1,7 +1,7 @@
 package net.jbridge.sample.interfacepack
 
 import android.widget.Toast
-import net.jbridge.JBridgeContext
+import net.jbridge.runtime.JBridgeContext
 import net.jbridge.sample.MainJBridge
 import net.jbridge.sample.SampleApplication
 
