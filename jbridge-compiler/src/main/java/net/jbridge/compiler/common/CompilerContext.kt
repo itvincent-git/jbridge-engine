@@ -3,6 +3,7 @@ package net.jbridge.compiler.common
 import javax.annotation.processing.ProcessingEnvironment
 
 /**
+ * ProcessingEnvironment 环境
  * Created by zhongyongsheng on 2018/4/13.
  */
 class CompilerContext(var processingEnvironment: ProcessingEnvironment) {

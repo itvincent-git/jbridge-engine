@@ -3,6 +3,7 @@ package net.jbridge.util
 import java.util.HashMap
 
 /**
+ * 临时变量生成
  * Created by zhongyongsheng on 2018/4/16.
  */
 class TmpVar {

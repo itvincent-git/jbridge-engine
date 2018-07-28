@@ -9,6 +9,7 @@ import java.io.IOException
 import javax.annotation.processing.ProcessingEnvironment
 
 /**
+ * 生成java文件基类
  * Created by zhongyongsheng on 2018/4/14.
  */
 abstract class JBridgeBaseWriter(internal var className: ClassName) {

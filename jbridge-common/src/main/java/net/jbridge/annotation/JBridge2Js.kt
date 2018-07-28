@@ -4,6 +4,7 @@ import net.jbridge.common.JBridgeCallback
 import kotlin.reflect.KClass
 
 /**
+ * 标注在JBridge2Js的接口类上
  * Created by zhongyongsheng on 2018/7/20.
  */
 @Retention(AnnotationRetention.BINARY)

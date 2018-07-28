@@ -5,6 +5,7 @@ import javax.lang.model.element.Element
 import javax.tools.Diagnostic
 
 /**
+ * messager日志封装
  * Created by zhongyongsheng on 2018/4/14.
  */
 class Log(private val messager: Messager) {

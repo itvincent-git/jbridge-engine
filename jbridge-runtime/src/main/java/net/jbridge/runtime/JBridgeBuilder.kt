@@ -8,7 +8,7 @@ import android.view.View
  * JBridge生成器
  * Created by zhongyongsheng on 2018/7/20.
  */
-class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>/*, val mCallback: JBridgeCallback*/) {
+class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>) {
     var mActivity: Activity? = null
     var mSupportFragment: Fragment? = null
     var mView: View? = null
@@ -38,8 +38,8 @@ class JBridgeBuilder<T: BaseJBridge>(val mTransformerClass: Class<T>/*, val mCal
         private val IMPL_SUFFIX = "_Impl"
 
         fun <T : BaseJBridge> newBuilder(
-                cls: Class<T>/*, callbackClass: Class<JBridgeCallback>*/): JBridgeBuilder<T> {
-            return JBridgeBuilder(cls/*, callback*/)
+                cls: Class<T>): JBridgeBuilder<T> {
+            return JBridgeBuilder(cls)
         }
 
         internal fun <T> getGeneratedImplementation(cls: Class<T>, suffix: String): T {
