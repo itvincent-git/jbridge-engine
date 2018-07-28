@@ -5,7 +5,7 @@ import net.jbridge.annotation.JBridgeField
 import net.jbridge.annotation.Js2JBridge
 import net.jbridge.compiler.common.CompilerContext
 import net.jbridge.compiler.data.JBridgeData
-import net.jbridge.compiler.data.Js2JBridgeGetMethod
+import net.jbridge.compiler.data.Js2JBridgeField
 import net.jbridge.util.Util
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
@@ -36,7 +36,7 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                 }
                 .map {
                     val js2bridgeData = Js2JBridgeProcessor(compileContext, it.second).process()
-                    Js2JBridgeGetMethod(it.first, it.first.simpleName.toString(), js2bridgeData)
+                    Js2JBridgeField(it.first, it.first.simpleName.toString(), js2bridgeData)
                 }
 
 //        val jBridge2JsMethods = allMembers

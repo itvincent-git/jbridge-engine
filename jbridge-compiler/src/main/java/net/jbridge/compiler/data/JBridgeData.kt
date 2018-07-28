@@ -7,7 +7,7 @@ import javax.lang.model.element.TypeElement
  * 保存@JBridge数据
  * Created by zhongyongsheng on 2018/7/25.
  */
-class JBridgeData(val element: TypeElement, val js2BridgeMethods: List<Js2JBridgeGetMethod>) {
+class JBridgeData(val element: TypeElement, val js2BridgeMethods: List<Js2JBridgeField>) {
 
     var implTypeName: ClassName
     var typeName: ClassName
