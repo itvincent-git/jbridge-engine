@@ -6,5 +6,8 @@ package net.jbridge.common
  */
 interface JBridgeCallback {
 
+    /**
+     * 调用游戏的方法
+     */
     fun eval(eval: String)
 }

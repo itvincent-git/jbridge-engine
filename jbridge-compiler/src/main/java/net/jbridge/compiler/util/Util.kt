@@ -6,11 +6,7 @@ import com.google.auto.common.MoreTypes
 import com.squareup.javapoet.TypeName
 
 import javax.annotation.processing.ProcessingEnvironment
-import javax.lang.model.element.AnnotationMirror
-import javax.lang.model.element.AnnotationValue
-import javax.lang.model.element.Element
-import javax.lang.model.element.ExecutableElement
-import javax.lang.model.element.TypeElement
+import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
 import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.SimpleAnnotationValueVisitor6
@@ -116,5 +112,12 @@ object Util {
      */
     fun typeMirrorToTypeName(typeMirror: TypeMirror): TypeName {
         return TypeName.get(typeMirror)
+    }
+
+    /**
+     * 转为变量element
+     */
+    fun toVariableElement(element: Element): VariableElement {
+        return MoreElements.asVariable(element)
     }
 }

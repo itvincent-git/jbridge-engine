@@ -1,7 +1,7 @@
 package net.jbridge.compiler.processor
 
 
-import net.jbridge.annotation.JBridgeMethod
+import net.jbridge.annotation.JBridgeField
 import net.jbridge.annotation.Js2JBridge
 import net.jbridge.compiler.common.CompilerContext
 import net.jbridge.compiler.data.JBridgeData
@@ -22,13 +22,14 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
         val allMembers = Util.getAllMembers(compileContext.processingEnvironment, classElement)
         val js2BridgeMethods = allMembers
                 .filter { element ->
-                    element.kind == ElementKind.METHOD && element.getAnnotation(JBridgeMethod::class.java) != null
+                    element.kind == ElementKind.FIELD && element.getAnnotation(JBridgeField::class.java) != null
                 }
                 .map {
-                    //compileContext.log.debug("Js2JBridge method %s", it.toString())
-                    val excutableElement = Util.asExecutable(it)
-                    val bridgeInterface = Util.toTypeElement(excutableElement.returnType)
-                    excutableElement to bridgeInterface
+                    compileContext.log.debug("Js2JBridge field %s", it.toString())
+                    //val excutableElement = Util.asExecutable(it)
+                    val variableElement = Util.toVariableElement(it)
+                    val bridgeInterface = Util.toTypeElement(variableElement.asType())
+                    variableElement to bridgeInterface
                 }
                 .filter {
                     it.second.getAnnotation(Js2JBridge::class.java) != null
@@ -38,9 +39,23 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                     Js2JBridgeGetMethod(it.first, it.first.simpleName.toString(), js2bridgeData)
                 }
 
-        /*else if (bridgeInterface.getAnnotation(JBridge2Js::class.java) != null) {
-
-                    }*/
+//        val jBridge2JsMethods = allMembers
+//                .filter { element ->
+//                    element.kind == ElementKind.METHOD && element.getAnnotation(JBridgeMethod::class.java) != null
+//                }
+//                .map {
+//                    //compileContext.log.debug("Js2JBridge method %s", it.toString())
+//                    val excutableElement = Util.asExecutable(it)
+//                    val bridgeInterface = Util.toTypeElement(excutableElement.returnType)
+//                    excutableElement to bridgeInterface
+//                }
+//                .filter {
+//                    it.second.getAnnotation(JBridge2Js::class.java) != null
+//                }
+//                .map {
+//                    val js2bridgeData = Js2JBridgeProcessor(compileContext, it.second).process()
+//                    Js2JBridgeGetMethod(it.first, it.first.simpleName.toString(), js2bridgeData)
+//                }
 
         return JBridgeData(classElement, js2BridgeMethods).apply {
             compileContext.log.debug("JBridge process %s:%s", classElement.toString(), this)
