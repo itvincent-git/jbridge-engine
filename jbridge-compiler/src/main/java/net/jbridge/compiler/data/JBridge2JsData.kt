@@ -2,16 +2,13 @@ package net.jbridge.compiler.data
 
 import com.squareup.javapoet.ClassName
 import javax.lang.model.element.TypeElement
-import javax.lang.model.element.VariableElement
+import javax.lang.model.type.DeclaredType
 
 /**
- * 保存@JBridge数据
+ * 保存@Js2JBridge 接口类的数据
  * Created by zhongyongsheng on 2018/7/25.
  */
-class JBridgeData(val element: TypeElement,
-                  val js2BridgeMethods: List<Js2JBridgeField>,
-                  val jBridge2JsMethods: List<JBridge2JsGetMethod>,
-                  val jBridgeCallbackField: VariableElement?) {
+class JBridge2JsData(val element:TypeElement, val declaredType: DeclaredType, val methods:List<JBridge2JsInterfaceMethod> ) {
 
     var implTypeName: ClassName
     var typeName: ClassName
@@ -23,8 +20,7 @@ class JBridgeData(val element: TypeElement,
     }
 
     override fun toString(): String {
-        return "JBridgeData(implTypeName=$implTypeName, typeName=$typeName)"
+        return "JBridge2JsData(element=$element, declaredType=$declaredType, methods=$methods, implTypeName=$implTypeName, typeName=$typeName)"
     }
-
 
 }

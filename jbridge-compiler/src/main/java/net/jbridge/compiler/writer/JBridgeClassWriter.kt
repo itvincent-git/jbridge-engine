@@ -1,8 +1,10 @@
 package net.jbridge.compiler.writer
 
 import com.squareup.javapoet.*
+import net.jbridge.compiler.data.JBridge2JsGetMethod
 import net.jbridge.compiler.data.JBridgeData
 import net.jbridge.compiler.data.Js2JBridgeInterfaceMethod
+import net.jbridge.util.TmpVar
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.VariableElement
@@ -18,6 +20,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
         builder.addModifiers(Modifier.PUBLIC)
                 .superclass(jbridgeData.typeName)
         addJavascriptInterfaceMethod(builder)
+        addJBridgeToJsMethod(builder)
         return builder
     }
 
@@ -64,35 +67,38 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
     }
 
 
-//    private fun addJBridgeToJsMethod(builder: TypeSpec.Builder) {
-//        val tmpVar = TmpVar()
-//        portTransformerData.portInterfaceMethodList.forEach { portInterfaceMethod ->
-//            val name = StringUtil.decapitalize(
-//                    portInterfaceMethod.portInterfaceData.typeName.simpleName())
-//            val fieldName = tmpVar.getTmpVar("_$name")
-//            val field = FieldSpec.builder(portInterfaceMethod.portInterfaceData.typeName,
-//                    fieldName,
-//                    Modifier.PRIVATE,
-//                    Modifier.VOLATILE)
-//                    .build()
-//            builder.addField(field)
-//            builder.addMethod(createInterfaceGetter(field, portInterfaceMethod))
-//        }
-//    }
-//
-//    private fun createInterfaceGetter(field: FieldSpec, portInterfaceMethod: PortInterfaceMethod): MethodSpec {
-//        val methodBuilder = MethodSpec.overriding(Util.asExecutable(portInterfaceMethod.element))
-//        methodBuilder.beginControlFlow("if (\$N != null)", field).addStatement("return \$N", field)
-//        methodBuilder.nextControlFlow("else")
-//                .beginControlFlow("synchronized(this)")
-//                .beginControlFlow("if (\$N == null)", field)
-//                .addStatement("\$N = new \$T()", field, portInterfaceMethod.portInterfaceData.implTypeName)
-//                .endControlFlow()
-//                .addStatement("return \$N", field)
-//                .endControlFlow()
-//                .endControlFlow()
-//        methodBuilder.addModifiers(Modifier.PUBLIC)
-//        return methodBuilder.build()
-//    }
+    /**
+     * 生成IJsInterface方法
+     */
+    private fun addJBridgeToJsMethod(builder: TypeSpec.Builder) {
+        val tmpVar = TmpVar()
+        jbridgeData.jBridge2JsMethods.forEach {
+            val name = it.js2JBridgeData.typeName.simpleName().decapitalize()//StringUtil.decapitalize(portInterfaceMethod.portInterfaceData.typeName.simpleName())
+
+            val fieldName = tmpVar.getTmpVar("_$name")
+            val field = FieldSpec.builder(it.js2JBridgeData.typeName,
+                    fieldName,
+                    Modifier.PRIVATE,
+                    Modifier.VOLATILE)
+                    .build()
+            builder.addField(field)
+            builder.addMethod(createInterfaceGetter(field, it))
+        }
+    }
+
+    private fun createInterfaceGetter(field: FieldSpec, method: JBridge2JsGetMethod): MethodSpec {
+        val methodBuilder = MethodSpec.overriding(net.jbridge.util.Util.asExecutable(method.element))
+        methodBuilder.beginControlFlow("if (\$N != null)", field).addStatement("return \$N", field)
+        methodBuilder.nextControlFlow("else")
+                .beginControlFlow("synchronized(this)")
+                .beginControlFlow("if (\$N == null)", field)
+                .addStatement("\$N = new \$T(\$L)", field, method.js2JBridgeData.implTypeName, jbridgeData.jBridgeCallbackField.toString())
+                .endControlFlow()
+                .addStatement("return \$N", field)
+                .endControlFlow()
+                .endControlFlow()
+        methodBuilder.addModifiers(Modifier.PUBLIC)
+        return methodBuilder.build()
+    }
 
 }
