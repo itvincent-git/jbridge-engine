@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference
  * JBridge上下文，保存activity, fragment, view
  * Created by zhongyongsheng on 2018/7/21.
  */
-class JBridgeContext<T : BaseJBridge>(activity: Activity?, supportFragment: Fragment?, view: View?, val jBridge: T) {
+class JBridgeContext<T : IJBridge>(activity: Activity?, supportFragment: Fragment?, view: View?, val jBridge: T) {
     val activityRef: WeakReference<Activity?>
     val supportFragmentRef: WeakReference<Fragment?>
     val viewRef: WeakReference<View?>
