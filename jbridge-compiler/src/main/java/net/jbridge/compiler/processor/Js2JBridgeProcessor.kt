@@ -3,10 +3,8 @@ package net.jbridge.compiler.processor
 
 import net.jbridge.annotation.Js2JBridge
 import net.jbridge.compiler.common.CompilerContext
-import net.jbridge.compiler.data.JBridgeData
 import net.jbridge.compiler.data.Js2JBridgeData
-import net.jbridge.compiler.data.Js2JBridgeInterfaceMethod
-import net.jbridge.util.Util
+import net.jbridge.util.JavaxUtil
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
@@ -28,11 +26,11 @@ class Js2JBridgeProcessor internal constructor(internal var compileContext: Comp
             compileContext.log.error(js2bridgeInterfaceElement, "${js2bridgeInterfaceElement.getSimpleName()} must be interface")
         }
 
-        val declaredType = Util.asDeclared(js2bridgeInterfaceElement)
+        val declaredType = JavaxUtil.asDeclared(js2bridgeInterfaceElement)
 
-        val interfaceMethods = Util.getAllMembers(compileContext.processingEnvironment, js2bridgeInterfaceElement)
+        val interfaceMethods = JavaxUtil.getAllMembers(compileContext.processingEnvironment, js2bridgeInterfaceElement)
                 .filter { it.getModifiers().contains(Modifier.ABSTRACT) && it.getKind().equals(ElementKind.METHOD) }
-                .map { Util.asExecutable(it) }
+                .map { JavaxUtil.asExecutable(it) }
                 .map { Js2JBridgeInterfaceMethodProcessor(compileContext, it).process() }
 
         return Js2JBridgeData(js2bridgeInterfaceElement, declaredType, interfaceMethods).apply {

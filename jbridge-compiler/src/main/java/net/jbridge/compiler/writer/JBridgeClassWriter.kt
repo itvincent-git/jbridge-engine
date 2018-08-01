@@ -59,7 +59,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
                     fieldElement.toString(),//getMethodName
                     executableElement.simpleName.toString(),//methodName
                     ParameterizedTypeName.get(ClassName.get("net.jbridge.runtime", "JBridgeContext"),
-                            jbridgeData.typeName),
+                            TypeName.get(interfaceMethod.jBridgeContextGenericType)),
                     interfaceMethod.parameters.joinToString { it.simpleName })//param list
         } else {
             methodSpec.addStatement("\$L.\$L(\$L)",
@@ -93,7 +93,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
      * 生成getJsInterface()方法
      */
     private fun createInterfaceGetter(field: FieldSpec, method: JBridge2JsGetMethod): MethodSpec {
-        val methodBuilder = MethodSpec.overriding(net.jbridge.util.Util.asExecutable(method.element))
+        val methodBuilder = MethodSpec.overriding(net.jbridge.util.JavaxUtil.asExecutable(method.element))
         methodBuilder.beginControlFlow("if (\$N != null)", field).addStatement("return \$N", field)
         methodBuilder.nextControlFlow("else")
                 .beginControlFlow("synchronized(this)")

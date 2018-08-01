@@ -5,9 +5,8 @@ import com.google.common.collect.SetMultimap
 import net.jbridge.annotation.JBridge
 import net.jbridge.compiler.common.CompilerContext
 import net.jbridge.compiler.writer.JBridge2JsInterfaceWriter
-import net.jbridge.compiler.writer.JBridgeBaseWriter
 import net.jbridge.compiler.writer.JBridgeClassWriter
-import net.jbridge.util.Util
+import net.jbridge.util.JavaxUtil
 import java.util.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
@@ -43,7 +42,7 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
         override fun process(elementsByAnnotation: SetMultimap<Class<out Annotation>, Element>): Set<Element> {
             val classSet = elementsByAnnotation.get(JBridge::class.java)
             classSet.map { element ->
-                JBridgeInterfaceProcessor(compilerContext!!, Util.toTypeElement(element)).process()
+                JBridgeInterfaceProcessor(compilerContext!!, JavaxUtil.toTypeElement(element)).process()
             }
             .forEach {
                 try {

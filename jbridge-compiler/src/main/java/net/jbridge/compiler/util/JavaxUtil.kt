@@ -15,7 +15,7 @@ import javax.lang.model.util.SimpleAnnotationValueVisitor6
  * javax类型的转换工具
  * Created by zhongyongsheng on 2018/4/14.
  */
-object Util {
+object JavaxUtil {
 
     private val TO_TYPE = object : SimpleAnnotationValueVisitor6<TypeMirror, Void>() {
         override fun visitType(typeMirror: TypeMirror, aVoid: Void?): TypeMirror {
@@ -119,5 +119,12 @@ object Util {
      */
     fun toVariableElement(element: Element): VariableElement {
         return MoreElements.asVariable(element)
+    }
+
+    /**
+     * 取类型定义的泛型
+     */
+    fun getTypeParameters(typeMirror: TypeMirror): List<out TypeMirror> {
+        return asDeclared(typeMirror).typeArguments
     }
 }
