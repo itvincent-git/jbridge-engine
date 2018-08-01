@@ -49,6 +49,9 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
         }
     }
 
+    /**
+     * 生成@JavascriptInterface方法内的代码块
+     */
     private fun addJavascriptInterfaceInner(methodSpec: MethodSpec.Builder, fieldElement:VariableElement,
                                     executableElement: ExecutableElement, interfaceMethod: Js2JBridgeInterfaceMethod) {
         if (interfaceMethod.hasJBridgeContext) {
@@ -73,7 +76,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
     private fun addJBridgeToJsMethod(builder: TypeSpec.Builder) {
         val tmpVar = TmpVar()
         jbridgeData.jBridge2JsMethods.forEach {
-            val name = it.js2JBridgeData.typeName.simpleName().decapitalize()//StringUtil.decapitalize(portInterfaceMethod.portInterfaceData.typeName.simpleName())
+            val name = it.js2JBridgeData.typeName.simpleName().decapitalize()
 
             val fieldName = tmpVar.getTmpVar("_$name")
             val field = FieldSpec.builder(it.js2JBridgeData.typeName,
@@ -86,6 +89,9 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
         }
     }
 
+    /**
+     * 生成getJsInterface()方法
+     */
     private fun createInterfaceGetter(field: FieldSpec, method: JBridge2JsGetMethod): MethodSpec {
         val methodBuilder = MethodSpec.overriding(net.jbridge.util.Util.asExecutable(method.element))
         methodBuilder.beginControlFlow("if (\$N != null)", field).addStatement("return \$N", field)
