@@ -23,9 +23,6 @@ abstract class MainJBridge: BaseJBridge() {
     @JvmField
     @JBridgeField
     protected var cat: CatBridgeInterface = CatBridgeImpl()
-    @JvmField
-    @JBridgeField
-    protected var jBridgeCallback: JBridgeCallback? = null
 
     @JBridgeMethod
     abstract fun getToJsInterface(): ToJsInterface
