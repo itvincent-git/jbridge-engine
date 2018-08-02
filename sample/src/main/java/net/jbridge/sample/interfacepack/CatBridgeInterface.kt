@@ -10,7 +10,7 @@ import net.jbridge.sample.MainJBridge
 @Js2JBridge
 interface CatBridgeInterface {
 
-    fun callCat(bridgeContext: JBridgeContext<MainJBridge>, index : Int, name: String, times: Long)
+    fun callCat(bridgeContext: JBridgeContext<MainJBridge>, toJsInterface: ToJsInterface, index : Int, name: String, times: Long)
 
     fun getCatCount(type: String)
 }

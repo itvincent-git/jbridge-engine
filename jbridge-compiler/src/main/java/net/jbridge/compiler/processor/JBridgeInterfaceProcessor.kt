@@ -24,23 +24,6 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
 
     internal fun process(): JBridgeData {
         val allMembers = JavaxUtil.getAllMembers(compileContext.processingEnvironment, classElement)
-        val js2BridgeMethods = allMembers
-                .filter { element ->
-                    element.kind == ElementKind.FIELD && element.getAnnotation(JBridgeField::class.java) != null
-                }
-                .map {
-                    //compileContext.log.debug("Js2JBridge field %s", it.toString())
-                    val variableElement = JavaxUtil.toVariableElement(it)
-                    val bridgeInterface = JavaxUtil.toTypeElement(variableElement.asType())
-                    variableElement to bridgeInterface
-                }
-                .filter {
-                    it.second.getAnnotation(Js2JBridge::class.java) != null
-                }
-                .map {
-                    val js2bridgeData = Js2JBridgeProcessor(compileContext, it.second).process()
-                    Js2JBridgeField(it.first, it.first.simpleName.toString(), js2bridgeData)
-                }
 
         val jBridgeCallbackField = allMembers
                 .filter { element ->
@@ -55,7 +38,6 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                     element.kind == ElementKind.METHOD && element.getAnnotation(JBridgeMethod::class.java) != null
                 }
                 .map {
-                    //compileContext.log.debug("Js2JBridge method %s", it.toString())
                     val excutableElement = JavaxUtil.asExecutable(it)
                     val bridgeInterface = JavaxUtil.toTypeElement(excutableElement.returnType)
                     excutableElement to bridgeInterface
@@ -66,6 +48,23 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                 .map {
                     val jbridge2Js = JBridge2JsProcessor(compileContext, it.second).process()
                     JBridge2JsGetMethod(it.first, it.first.simpleName.toString(), jbridge2Js)
+                }
+
+        val js2BridgeMethods = allMembers
+                .filter { element ->
+                    element.kind == ElementKind.FIELD && element.getAnnotation(JBridgeField::class.java) != null
+                }
+                .map {
+                    val variableElement = JavaxUtil.toVariableElement(it)
+                    val bridgeInterface = JavaxUtil.toTypeElement(variableElement.asType())
+                    variableElement to bridgeInterface
+                }
+                .filter {
+                    it.second.getAnnotation(Js2JBridge::class.java) != null
+                }
+                .map {
+                    val js2bridgeData = Js2JBridgeProcessor(compileContext, it.second, jBridge2JsMethods).process()
+                    Js2JBridgeField(it.first, it.first.simpleName.toString(), js2bridgeData)
                 }
 
         return JBridgeData(classElement, js2BridgeMethods, jBridge2JsMethods, jBridgeCallbackField).apply {

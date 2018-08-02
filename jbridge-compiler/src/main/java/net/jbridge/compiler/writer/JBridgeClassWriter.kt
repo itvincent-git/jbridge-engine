@@ -38,10 +38,11 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
                         .addAnnotation(ClassName.get("android.webkit", "JavascriptInterface"))
                         .apply {
                             addJavascriptInterfaceInner(this, fieldElement, executableElement, interfaceMethod)
-                            interfaceMethod.parameters.forEach {
-
-                                this.addParameter(ParameterSpec.get(it))
-                            }
+                            interfaceMethod.parameters
+                                .filter { !it.isJBridgeContext && !it.isJBridgeToJsInterface }//不生成这些方法定义
+                                .forEach {
+                                    this.addParameter(ParameterSpec.get(it.variableElement))
+                                }
                             builder.addMethod(this.build())
                         }
 
@@ -54,19 +55,20 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
      */
     private fun addJavascriptInterfaceInner(methodSpec: MethodSpec.Builder, fieldElement:VariableElement,
                                     executableElement: ExecutableElement, interfaceMethod: Js2JBridgeInterfaceMethod) {
-        if (interfaceMethod.hasJBridgeContext) {
-            methodSpec.addStatement("\$L.\$L((\$T)bridgeContext, \$L)",
-                    fieldElement.toString(),//getMethodName
-                    executableElement.simpleName.toString(),//methodName
-                    ParameterizedTypeName.get(ClassName.get("net.jbridge.runtime", "JBridgeContext"),
-                            TypeName.get(interfaceMethod.jBridgeContextGenericType)),
-                    interfaceMethod.parameters.joinToString { it.simpleName })//param list
-        } else {
-            methodSpec.addStatement("\$L.\$L(\$L)",
-                    fieldElement.toString(),//getMethodName
-                    executableElement.simpleName.toString(),//methodName
-                    interfaceMethod.parameters.joinToString { it.simpleName })//param list
-        }
+        methodSpec.addStatement("\$L.\$L(\$L)",
+                fieldElement.toString(),//getMethodName
+                executableElement.simpleName.toString(),//methodName
+                interfaceMethod.parameters.joinToString {
+                    if (it.isJBridgeContext) {//处理JBridgeContext类型
+                        val convertTypeString = ParameterizedTypeName.get(ClassName.get("net.jbridge.runtime", "JBridgeContext"),
+                                TypeName.get(it.jBridgeContextGenericType)).toString()
+                        return@joinToString "($convertTypeString) ${it.variableElement.simpleName}"
+                    }
+                    if (it.isJBridgeToJsInterface) {//处理JBridge2Js接口
+                        return@joinToString it.jBridgeToJsGetMethod?.element.toString()
+                    }
+                    return@joinToString it.variableElement.simpleName
+                })//param list
     }
 
 
