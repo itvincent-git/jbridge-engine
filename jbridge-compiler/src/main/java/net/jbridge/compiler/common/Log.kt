@@ -1,5 +1,7 @@
 package net.jbridge.compiler.common
 
+import java.io.PrintWriter
+import java.io.StringWriter
 import javax.annotation.processing.Messager
 import javax.lang.model.element.Element
 import javax.tools.Diagnostic
@@ -30,8 +32,10 @@ class Log(private val messager: Messager) {
         messager.printMessage(Diagnostic.Kind.ERROR, safeFormat(msg, *args), element)
     }
 
-    fun error(msg: String, vararg args: Any) {
-        messager.printMessage(Diagnostic.Kind.ERROR, safeFormat(msg, *args))
+    fun error(msg: String, throwable: Throwable) {
+        val sw = StringWriter();
+        throwable.printStackTrace(PrintWriter(sw))
+        messager.printMessage(Diagnostic.Kind.ERROR, msg + ":" + sw.toString())
     }
 
     private fun safeFormat(msg: String, vararg args: Any): String {

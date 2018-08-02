@@ -32,8 +32,6 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
                         val typeElement = JavaxUtil.toTypeElement(type)
 
                         if (typeElement.qualifiedName.toString() == "net.jbridge.runtime.JBridgeContext") {
-                            jBridgeContextGenericType = JavaxUtil.getTypeParameters(type).firstOrNull()
-                            //compileContext.log.debug("Js2JBridgeInterfaceMethodProcessor hasJBridgeContext $typeElement <$jBridgeContextGenericType>")
                             isJBridgeContext = true
                         } else if (typeElement.getAnnotation(JBridge2Js::class.java) != null){
                             isJBridgeToJsInterface = true
@@ -45,7 +43,7 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
 
 
                     }
-                    Js2JBridgeInterfaceMethodParameter(it, isJBridgeContext, jBridgeContextGenericType, isJBridgeToJsInterface, jBridgeToJsGetMethod).apply {
+                    Js2JBridgeInterfaceMethodParameter(it, isJBridgeContext, isJBridgeToJsInterface, jBridgeToJsGetMethod).apply {
                         compileContext.log.debug("Js2JBridgeInterfaceMethodProcessor %s", it)
                     }
                 }

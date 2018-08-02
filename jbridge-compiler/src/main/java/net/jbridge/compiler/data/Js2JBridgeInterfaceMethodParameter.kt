@@ -9,13 +9,10 @@ import javax.lang.model.type.TypeMirror
  */
 class Js2JBridgeInterfaceMethodParameter(val variableElement: VariableElement,
                                          val isJBridgeContext: Boolean,
-                                         val jBridgeContextGenericType: TypeMirror?, /*JBridgeContext上的泛型类型*/
                                          val isJBridgeToJsInterface: Boolean,
                                          val jBridgeToJsGetMethod: JBridge2JsGetMethod?) {
-
     override fun toString(): String {
-        return "Js2JBridgeInterfaceMethodParameter(variableElement=$variableElement, " +
-                "isJBridgeContext=$isJBridgeContext, jBridgeContextGenericType=$jBridgeContextGenericType," +
-                " isJBridgeToJsInterface=$isJBridgeToJsInterface, jBridgeToJsGetMethod=$jBridgeToJsGetMethod)"
+        return "Js2JBridgeInterfaceMethodParameter(variableElement=$variableElement, isJBridgeContext=$isJBridgeContext, isJBridgeToJsInterface=$isJBridgeToJsInterface, jBridgeToJsGetMethod=$jBridgeToJsGetMethod)"
     }
+
 }

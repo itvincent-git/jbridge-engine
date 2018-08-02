@@ -60,9 +60,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
                 executableElement.simpleName.toString(),//methodName
                 interfaceMethod.parameters.joinToString {
                     if (it.isJBridgeContext) {//处理JBridgeContext类型
-                        val convertTypeString = ParameterizedTypeName.get(ClassName.get("net.jbridge.runtime", "JBridgeContext"),
-                                TypeName.get(it.jBridgeContextGenericType)).toString()
-                        return@joinToString "($convertTypeString) ${it.variableElement.simpleName}"
+                        return@joinToString "${it.variableElement.simpleName}"
                     }
                     if (it.isJBridgeToJsInterface) {//处理JBridge2Js接口
                         return@joinToString it.jBridgeToJsGetMethod?.element.toString()

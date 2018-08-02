@@ -52,7 +52,7 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
                     }
 
                 } catch (e: Throwable) {
-                    portContext!!.log.error("JBridgeProcessingStep error %s", e.message ?: "")
+                    portContext!!.log.error("JBridgeProcessingStep error", e)
                 }
             }
 

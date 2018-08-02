@@ -10,7 +10,7 @@ import net.jbridge.sample.SampleApplication
  */
 class CatBridgeImpl: CatBridgeInterface {
 
-    override fun callCat(bridgeContext: JBridgeContext<MainJBridge>, toJsInterface: ToJsInterface, index : Int, name: String, times: Long) {
+    override fun callCat(bridgeContext: JBridgeContext, toJsInterface: ToJsInterface, index : Int, name: String, times: Long) {
         Toast.makeText(SampleApplication.application, "callCat $index $name $times", Toast.LENGTH_SHORT).show()
         // do something business
         toJsInterface.onCallback("cat callback")
