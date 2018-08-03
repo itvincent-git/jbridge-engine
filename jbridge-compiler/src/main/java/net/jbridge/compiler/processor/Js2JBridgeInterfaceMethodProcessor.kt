@@ -23,7 +23,6 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
         val parameters = executableElement.getParameters()
                 .map {
                     var isJBridgeContext = false
-                    var jBridgeContextGenericType: TypeMirror? = null
                     var jBridgeToJsGetMethod: JBridge2JsGetMethod? = null
                     var isJBridgeToJsInterface = false
 
@@ -43,9 +42,7 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
 
 
                     }
-                    Js2JBridgeInterfaceMethodParameter(it, isJBridgeContext, isJBridgeToJsInterface, jBridgeToJsGetMethod).apply {
-                        compileContext.log.debug("Js2JBridgeInterfaceMethodProcessor %s", it)
-                    }
+                    Js2JBridgeInterfaceMethodParameter(it, isJBridgeContext, isJBridgeToJsInterface, jBridgeToJsGetMethod)
                 }
 
         return Js2JBridgeInterfaceMethod(executableElement, parameters).apply {

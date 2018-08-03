@@ -13,8 +13,9 @@ import javax.lang.model.element.TypeElement
  * 处理@JBridge2Js接口类的信息
  * Created by zhongyongsheng on 2018/4/14.
  */
-class JBridge2JsProcessor internal constructor(internal var compileContext: CompilerContext,
-                                               internal var jbridge2JsInterfaceElement: TypeElement) {
+class JBridge2JsProcessor internal constructor(val compileContext: CompilerContext,
+                                               val jbridge2JsInterfaceElement: TypeElement,
+                                               val jBridgeClassElement: TypeElement) {
 
 
     internal fun process(): JBridge2JsData {
@@ -33,7 +34,7 @@ class JBridge2JsProcessor internal constructor(internal var compileContext: Comp
                 .map { JavaxUtil.asExecutable(it) }
                 .map { JBridge2JsInterfaceMethodProcessor(compileContext, it).process() }
 
-        return JBridge2JsData(jbridge2JsInterfaceElement, declaredType, interfaceMethods).apply {
+        return JBridge2JsData(jbridge2JsInterfaceElement, declaredType, interfaceMethods, jBridgeClassElement).apply {
             compileContext.log.debug("JBridge2Js process %s:%s", jbridge2JsInterfaceElement.toString(), this)
         }
     }

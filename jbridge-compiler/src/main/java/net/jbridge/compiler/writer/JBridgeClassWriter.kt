@@ -28,7 +28,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
      * 生成@JavascriptInterface方法
      */
     private fun addJavascriptInterfaceMethod(builder: TypeSpec.Builder) {
-        jbridgeData.js2BridgeMethods.forEach { getMethod ->
+        jbridgeData.js2BridgeFields.forEach { getMethod ->
             getMethod.js2JBridgeData.methods.forEach { interfaceMethod ->
                 val executableElement = interfaceMethod.executableElement
                 var fieldElement = getMethod.element

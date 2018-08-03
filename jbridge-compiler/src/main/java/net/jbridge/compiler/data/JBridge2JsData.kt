@@ -8,14 +8,17 @@ import javax.lang.model.type.DeclaredType
  * 保存@Js2JBridge 接口类的数据
  * Created by zhongyongsheng on 2018/7/25.
  */
-class JBridge2JsData(val element:TypeElement, val declaredType: DeclaredType, val methods:List<JBridge2JsInterfaceMethod> ) {
+class JBridge2JsData(val element:TypeElement,
+                     val declaredType: DeclaredType,
+                     val methods:List<JBridge2JsInterfaceMethod>,
+                     val jBridgeClassElement: TypeElement) {
 
     var implTypeName: ClassName
     var typeName: ClassName
 
     init {
         typeName = ClassName.get(element)
-        val implClassName = typeName.simpleNames().joinToString("_") + "_Impl"
+        val implClassName = typeName.simpleNames().joinToString("_") + "_${jBridgeClassElement.simpleName}_Impl"
         implTypeName = ClassName.get(typeName.packageName(), implClassName)
     }
 

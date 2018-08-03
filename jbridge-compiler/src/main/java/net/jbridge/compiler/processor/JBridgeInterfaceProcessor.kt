@@ -25,6 +25,7 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
     internal fun process(): JBridgeData {
         val allMembers = JavaxUtil.getAllMembers(compileContext.processingEnvironment, classElement)
 
+        //jbridgeCallback字段
         val jBridgeCallbackField = allMembers
                 .filter { element ->
                     element.kind == ElementKind.FIELD && element.getAnnotation(JBridgeField::class.java) != null
@@ -33,6 +34,7 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                 .filter { JavaxUtil.toTypeElement(it.asType()).qualifiedName.toString() == JBridgeCallback::class.java.name }
                 .firstOrNull()
 
+        //getXXXInterface方法
         val jBridge2JsMethods = allMembers
                 .filter { element ->
                     element.kind == ElementKind.METHOD && element.getAnnotation(JBridgeMethod::class.java) != null
@@ -46,11 +48,12 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                     it.second.getAnnotation(JBridge2Js::class.java) != null
                 }
                 .map {
-                    val jbridge2Js = JBridge2JsProcessor(compileContext, it.second).process()
+                    val jbridge2Js = JBridge2JsProcessor(compileContext, it.second, classElement/*JBridgeClass*/).process()
                     JBridge2JsGetMethod(it.first, it.first.simpleName.toString(), jbridge2Js)
                 }
 
-        val js2BridgeMethods = allMembers
+        //var XXXInterface
+        val js2BridgeFields = allMembers
                 .filter { element ->
                     element.kind == ElementKind.FIELD && element.getAnnotation(JBridgeField::class.java) != null
                 }
@@ -67,7 +70,7 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                     Js2JBridgeField(it.first, it.first.simpleName.toString(), js2bridgeData)
                 }
 
-        return JBridgeData(classElement, js2BridgeMethods, jBridge2JsMethods, jBridgeCallbackField).apply {
+        return JBridgeData(classElement, js2BridgeFields, jBridge2JsMethods, jBridgeCallbackField).apply {
             compileContext.log.debug("JBridge process %s:%s", classElement.toString(), this)
         }
     }

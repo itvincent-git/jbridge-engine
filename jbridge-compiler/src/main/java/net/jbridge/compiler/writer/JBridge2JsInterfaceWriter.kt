@@ -12,7 +12,7 @@ import javax.lang.model.element.Modifier
  * 生成XXXInterface_Impl
  * Created by zhongyongsheng on 2018/4/14.
  */
-class JBridge2JsInterfaceWriter(internal var jbridge2jsData: JBridge2JsData) : JBridgeBaseWriter(jbridge2jsData.implTypeName) {
+class JBridge2JsInterfaceWriter(val jbridge2jsData: JBridge2JsData) : JBridgeBaseWriter(jbridge2jsData.implTypeName) {
 
     override fun createTypeSpecBuilder(): TypeSpec.Builder {
         val builder = TypeSpec.classBuilder(jbridge2jsData.implTypeName)
@@ -21,7 +21,6 @@ class JBridge2JsInterfaceWriter(internal var jbridge2jsData: JBridge2JsData) : J
         val fieldName = addJBridgeCallbackField(builder)
         addConstructor(builder, fieldName)
         addJBridge2JsMethod(builder, fieldName)
-        //addJBridgeToJsMethod(builder)
         return builder
     }
 

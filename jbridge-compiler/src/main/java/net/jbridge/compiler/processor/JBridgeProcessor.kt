@@ -4,6 +4,7 @@ import com.google.auto.common.BasicAnnotationProcessor
 import com.google.common.collect.SetMultimap
 import net.jbridge.annotation.JBridge
 import net.jbridge.compiler.common.CompilerContext
+import net.jbridge.compiler.data.JBridge2JsGetMethod
 import net.jbridge.compiler.writer.JBridge2JsInterfaceWriter
 import net.jbridge.compiler.writer.JBridgeClassWriter
 import net.jbridge.util.JavaxUtil
@@ -47,8 +48,8 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
             .forEach {
                 try {
                     JBridgeClassWriter(it).write(processingEnv)
-                    it.jBridge2JsMethods.forEach {
-                        JBridge2JsInterfaceWriter(it.js2JBridgeData).write(processingEnv)
+                    it.jBridge2JsMethods.forEach { getMethod: JBridge2JsGetMethod ->
+                        JBridge2JsInterfaceWriter(getMethod.js2JBridgeData).write(processingEnv)
                     }
 
                 } catch (e: Throwable) {

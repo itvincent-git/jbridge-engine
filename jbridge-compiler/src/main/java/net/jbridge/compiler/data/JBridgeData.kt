@@ -9,7 +9,7 @@ import javax.lang.model.element.VariableElement
  * Created by zhongyongsheng on 2018/7/25.
  */
 class JBridgeData(val element: TypeElement,
-                  val js2BridgeMethods: List<Js2JBridgeField>,
+                  val js2BridgeFields: List<Js2JBridgeField>,
                   val jBridge2JsMethods: List<JBridge2JsGetMethod>,
                   val jBridgeCallbackField: VariableElement?) {
 
