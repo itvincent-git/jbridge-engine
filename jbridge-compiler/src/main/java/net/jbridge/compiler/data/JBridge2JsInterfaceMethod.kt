@@ -8,5 +8,5 @@ import javax.lang.model.element.VariableElement
  * Created by zhongyongsheng on 2018/7/25.
  */
 class JBridge2JsInterfaceMethod(val executableElement: ExecutableElement,
-                                val parameters: List<out VariableElement>) {
+                                val parameters: List<VariableElement>) {
 }

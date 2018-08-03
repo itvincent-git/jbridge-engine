@@ -4,9 +4,11 @@ import com.squareup.javapoet.*
 import net.jbridge.common.JBridgeCallback
 import net.jbridge.compiler.data.JBridge2JsData
 import net.jbridge.compiler.data.JBridge2JsInterfaceMethod
+import net.jbridge.util.JavaxUtil
 import net.jbridge.util.TmpVar
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
+import javax.lang.model.type.TypeMirror
 
 /**
  * 生成XXXInterface_Impl
@@ -77,8 +79,26 @@ class JBridge2JsInterfaceWriter(val jbridge2jsData: JBridge2JsData) : JBridgeBas
         methodSpec.addStatement("\$L.eval(\"javascript:\$L(\$L)\")",
                 fieldName,
                 executableElement.simpleName.toString(),//methodName
+                interfaceMethod.parameters.joinToString {
+                    val type = it.asType()
+                    if (type.kind.isPrimitive || isPrimitiveBoxer(type)) {//基本类型不加引号
+                        "\" + ${it.simpleName} + \""
+                    } else {
+                        "\\\"\" + ${it.simpleName} + \"\\\""
+                    }
+                })//param list
+    }
 
-                interfaceMethod.parameters.joinToString { "\\\"\" + ${it.simpleName} + \"\\\"" })//param list
+    private fun isPrimitiveBoxer(type: TypeMirror): Boolean {
+        val typeName = JavaxUtil.toTypeElement(type).qualifiedName
+        when {
+            typeName.contentEquals("java.lang.Integer") -> return true
+            typeName.contentEquals("java.lang.Long") -> return true
+            typeName.contentEquals("java.lang.Boolean") -> return true
+            typeName.contentEquals("java.lang.Float") -> return true
+            typeName.contentEquals("java.lang.Double") -> return true
+        }
+        return false
     }
 
 }

@@ -124,7 +124,7 @@ object JavaxUtil {
     /**
      * 取类型定义的泛型
      */
-    fun getTypeParameters(typeMirror: TypeMirror): List<out TypeMirror> {
+    fun getTypeParameters(typeMirror: TypeMirror): List<TypeMirror> {
         return asDeclared(typeMirror).typeArguments
     }
 }
