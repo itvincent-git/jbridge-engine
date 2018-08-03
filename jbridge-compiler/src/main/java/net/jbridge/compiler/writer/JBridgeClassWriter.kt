@@ -60,7 +60,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
                 executableElement.simpleName.toString(),//methodName
                 interfaceMethod.parameters.joinToString {
                     if (it.isJBridgeContext) {//处理JBridgeContext类型
-                        return@joinToString "${it.variableElement.simpleName}"
+                        return@joinToString "bridgeContext"
                     }
                     if (it.isJBridgeToJsInterface) {//处理JBridge2Js接口
                         return@joinToString it.jBridgeToJsGetMethod?.element.toString()
