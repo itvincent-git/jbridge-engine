@@ -8,6 +8,7 @@ import com.squareup.javapoet.TypeName
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.*
 import javax.lang.model.type.DeclaredType
+import javax.lang.model.type.TypeKind
 import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.SimpleAnnotationValueVisitor6
 
@@ -126,5 +127,19 @@ object JavaxUtil {
      */
     fun getTypeParameters(typeMirror: TypeMirror): List<TypeMirror> {
         return asDeclared(typeMirror).typeArguments
+    }
+
+    /**
+     * 是否原始类型
+     */
+    fun isPrimitiveType(typeMirror: TypeMirror): Boolean {
+        return typeMirror.kind.isPrimitive
+    }
+
+    /*
+     * 是否Array类型
+     */
+    fun isArrayType(typeMirror: TypeMirror): Boolean {
+        return typeMirror.kind == TypeKind.ARRAY
     }
 }

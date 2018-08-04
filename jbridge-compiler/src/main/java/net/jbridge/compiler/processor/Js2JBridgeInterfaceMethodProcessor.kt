@@ -8,7 +8,6 @@ import net.jbridge.compiler.data.Js2JBridgeInterfaceMethod
 import net.jbridge.compiler.data.Js2JBridgeInterfaceMethodParameter
 import net.jbridge.util.JavaxUtil
 import javax.lang.model.element.ExecutableElement
-import javax.lang.model.type.TypeKind
 
 /**
  * 处理@Js2JBridge标注的类的信息
@@ -27,7 +26,7 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
                     var isJBridgeToJsInterface = false
 
                     val type = it.asType()
-                    if (!type.kind.isPrimitive && type.kind != TypeKind.ARRAY) {
+                    if (!JavaxUtil.isPrimitiveType(type) && !JavaxUtil.isArrayType(type)) {
                         val typeElement = JavaxUtil.toTypeElement(type)
 
                         if (typeElement.qualifiedName.toString() == "net.jbridge.runtime.JBridgeContext") {
