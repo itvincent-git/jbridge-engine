@@ -13,4 +13,6 @@ interface CatBridgeInterface {
     fun callCat(bridgeContext: JBridgeContext, toJsInterface: ToJsInterface, index : Int, name: String, times: Long)
 
     fun getCatCount(type: String)
+
+    fun bytesTest(byteArray: ByteArray)
 }

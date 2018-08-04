@@ -20,4 +20,8 @@ class CatBridgeImpl: CatBridgeInterface {
     override fun getCatCount(type: String) {
 
     }
+
+    override fun bytesTest(byteArray: ByteArray) {
+        Toast.makeText(SampleApplication.application, "bytesTest ${byteArray.size}", Toast.LENGTH_SHORT).show()
+    }
 }
