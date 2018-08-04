@@ -9,4 +9,8 @@ import javax.lang.model.element.VariableElement
  */
 class JBridge2JsInterfaceMethod(val executableElement: ExecutableElement,
                                 val parameters: List<VariableElement>) {
+
+    override fun toString(): String {
+        return "JBridge2JsInterfaceMethod(executableElement=$executableElement, parameters=$parameters)"
+    }
 }

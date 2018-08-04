@@ -23,8 +23,6 @@ class JBridgeData(val element: TypeElement,
     }
 
     override fun toString(): String {
-        return "JBridgeData(implTypeName=$implTypeName, typeName=$typeName)"
+        return "JBridgeData(element=$element, js2BridgeFields=$js2BridgeFields, jBridge2JsMethods=$jBridge2JsMethods, jBridgeCallbackField=$jBridgeCallbackField, implTypeName=$implTypeName, typeName=$typeName)"
     }
-
-
 }

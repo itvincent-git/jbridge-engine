@@ -44,7 +44,7 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
                 }
 
         return Js2JBridgeInterfaceMethod(executableElement, parameters).apply {
-            compileContext.log.debug("Js2JBridgeInterfaceMethod process %s:%s", executableElement.toString(), this)
+            //compileContext.log.debug("Js2JBridgeInterfaceMethod process %s:%s", executableElement.toString(), this)
         }
     }
 }

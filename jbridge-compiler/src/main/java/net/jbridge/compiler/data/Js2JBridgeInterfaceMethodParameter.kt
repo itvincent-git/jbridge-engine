@@ -12,7 +12,7 @@ class Js2JBridgeInterfaceMethodParameter(val variableElement: VariableElement,
                                          val isJBridgeToJsInterface: Boolean,
                                          val jBridgeToJsGetMethod: JBridge2JsGetMethod?) {
     override fun toString(): String {
-        return "Js2JBridgeInterfaceMethodParameter(variableElement=$variableElement, isJBridgeContext=$isJBridgeContext, isJBridgeToJsInterface=$isJBridgeToJsInterface, jBridgeToJsGetMethod=$jBridgeToJsGetMethod)"
+        return "Js2JBridgeInterfaceMethodParameter(variableElement=$variableElement, isJBridgeContext=$isJBridgeContext, isJBridgeToJsInterface=$isJBridgeToJsInterface)"
     }
 
 }

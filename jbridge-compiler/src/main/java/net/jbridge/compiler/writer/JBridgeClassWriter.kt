@@ -76,10 +76,10 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
     private fun addJBridgeToJsMethod(builder: TypeSpec.Builder) {
         val tmpVar = TmpVar()
         jbridgeData.jBridge2JsMethods.forEach {
-            val name = it.js2JBridgeData.typeName.simpleName().decapitalize()
+            val name = it.jBridge2JsData.typeName.simpleName().decapitalize()
 
             val fieldName = tmpVar.getTmpVar("_$name")
-            val field = FieldSpec.builder(it.js2JBridgeData.typeName,
+            val field = FieldSpec.builder(it.jBridge2JsData.typeName,
                     fieldName,
                     Modifier.PRIVATE,
                     Modifier.VOLATILE)
@@ -98,7 +98,7 @@ class JBridgeClassWriter(internal var jbridgeData: JBridgeData) : JBridgeBaseWri
         methodBuilder.nextControlFlow("else")
                 .beginControlFlow("synchronized(this)")
                 .beginControlFlow("if (\$N == null)", field)
-                .addStatement("\$N = new \$T(\$L)", field, method.js2JBridgeData.implTypeName, jbridgeData.jBridgeCallbackField.toString())
+                .addStatement("\$N = new \$T(\$L)", field, method.jBridge2JsData.implTypeName, jbridgeData.jBridgeCallbackField.toString())
                 .endControlFlow()
                 .addStatement("return \$N", field)
                 .endControlFlow()

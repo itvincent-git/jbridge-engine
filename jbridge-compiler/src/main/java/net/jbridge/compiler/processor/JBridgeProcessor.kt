@@ -49,7 +49,7 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
                 try {
                     JBridgeClassWriter(it).write(processingEnv)
                     it.jBridge2JsMethods.forEach { getMethod: JBridge2JsGetMethod ->
-                        JBridge2JsInterfaceWriter(getMethod.js2JBridgeData).write(processingEnv)
+                        JBridge2JsInterfaceWriter(getMethod.jBridge2JsData).write(processingEnv)
                     }
 
                 } catch (e: Throwable) {

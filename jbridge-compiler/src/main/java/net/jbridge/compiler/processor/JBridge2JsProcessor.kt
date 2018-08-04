@@ -35,7 +35,7 @@ class JBridge2JsProcessor internal constructor(val compileContext: CompilerConte
                 .map { JBridge2JsInterfaceMethodProcessor(compileContext, it).process() }
 
         return JBridge2JsData(jbridge2JsInterfaceElement, declaredType, interfaceMethods, jBridgeClassElement).apply {
-            compileContext.log.debug("JBridge2Js process %s:%s", jbridge2JsInterfaceElement.toString(), this)
+            //compileContext.log.debug("JBridge2Js process %s:%s", jbridge2JsInterfaceElement.toString(), this)
         }
     }
 }
