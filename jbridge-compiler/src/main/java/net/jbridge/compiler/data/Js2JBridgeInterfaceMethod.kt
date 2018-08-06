@@ -8,6 +8,7 @@ import javax.lang.model.element.ExecutableElement
  */
 class Js2JBridgeInterfaceMethod(val executableElement: ExecutableElement,
                                 val parameters: List<Js2JBridgeInterfaceMethodParameter>) {
+    val isReturnNotVoid = executableElement.returnType.toString() != "void"
 
     override fun toString(): String {
         return "Js2JBridgeInterfaceMethod(executableElement=$executableElement, parameters=$parameters)"

@@ -47,6 +47,9 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
                                 .forEach {
                                     this.addParameter(ParameterSpec.get(it.variableElement))
                                 }
+                            if (interfaceMethod.isReturnNotVoid) {
+                                this.returns(TypeName.get(executableElement.returnType))
+                            }
                             builder.addMethod(this.build())
                         }
 
@@ -59,7 +62,8 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
      */
     private fun addJavascriptInterfaceInner(methodSpec: MethodSpec.Builder, fieldElement:VariableElement,
                                     executableElement: ExecutableElement, interfaceMethod: Js2JBridgeInterfaceMethod) {
-        methodSpec.addStatement("\$L.\$L(\$L)",
+        methodSpec.addStatement("\$L\$L.\$L(\$L)",
+                if (interfaceMethod.isReturnNotVoid) "return " else "",
                 fieldElement.toString(),//fieldName
                 executableElement.simpleName.toString(),//methodName
                 interfaceMethod.parameters.joinToString {
@@ -126,9 +130,9 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
                 getMethod.js2JBridgeData.methods
                     .filter {
                         if (isSyncReturn)
-                            it.executableElement.returnType.toString() != "void"//只处理有返回值
+                            it.isReturnNotVoid//只处理有返回值
                         else
-                            it.executableElement.returnType.toString() == "void"//只处理没返回值
+                            !it.isReturnNotVoid//只处理没返回值
                     }
                     .forEach { interfaceMethod ->
                         val executableElement = interfaceMethod.executableElement
@@ -168,6 +172,10 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
             methodBuilder.addCode(codeBlock.build())
             builder.addMethod(methodBuilder.build())
         }
+
+    }
+
+    private fun createInjectJsMethod(builder: TypeSpec.Builder) {
 
     }
 
