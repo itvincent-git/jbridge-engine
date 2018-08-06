@@ -12,6 +12,11 @@ class DogBridgeImpl: DogBridgeInterface {
         Toast.makeText(SampleApplication.application, "callDog $index $name $times", Toast.LENGTH_SHORT).show()
     }
 
+    override fun callDog(index: Int, name: String) {
+        Toast.makeText(SampleApplication.application, "callDog $index $name", Toast.LENGTH_SHORT).show()
+
+    }
+
     override fun callDogWithReturn(index: Int, name: String, times: Long): Int {
         return index + 100
     }

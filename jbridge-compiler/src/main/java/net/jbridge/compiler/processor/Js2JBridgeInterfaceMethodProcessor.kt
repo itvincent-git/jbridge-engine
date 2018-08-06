@@ -16,8 +16,6 @@ import javax.lang.model.element.ExecutableElement
 class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext: CompilerContext,
                                                               val executableElement: ExecutableElement,
                                                               val jBridge2JsMethods: List<JBridge2JsGetMethod>) {
-
-
     internal fun process(): Js2JBridgeInterfaceMethod {
         val parameters = executableElement.getParameters()
                 .map {
@@ -42,8 +40,6 @@ class Js2JBridgeInterfaceMethodProcessor internal constructor(val compileContext
                     Js2JBridgeInterfaceMethodParameter(it, isJBridgeContext, isJBridgeToJsInterface, jBridgeToJsGetMethod)
                 }
 
-        return Js2JBridgeInterfaceMethod(executableElement, parameters).apply {
-            //compileContext.log.debug("Js2JBridgeInterfaceMethod process %s:%s", executableElement.toString(), this)
-        }
+        return Js2JBridgeInterfaceMethod(executableElement, parameters)
     }
 }

@@ -10,5 +10,7 @@ interface DogBridgeInterface {
 
     fun callDog(index: Int, name: String, times: Long)
 
+    fun callDog(index: Int, name: String)
+
     fun callDogWithReturn(index: Int, name: String, times: Long): Int
 }

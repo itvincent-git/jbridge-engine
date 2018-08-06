@@ -134,7 +134,13 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
                         val executableElement = interfaceMethod.executableElement
                         var fieldElement = getMethod.element
 
-                        codeBlock.add("case \$S:\n", executableElement.simpleName.toString())
+                        codeBlock.add("case \$S:\n", kotlin.run {
+                            return@run "${executableElement.simpleName}(" +
+                            interfaceMethod.parameters.filter { !it.isJBridgeContext && !it.isJBridgeToJsInterface }//不生成这些方法定义
+                                .joinToString {
+                                    it.variableElement.toString()
+                                } + ")"
+                        })
                         codeBlock.add("\t\$L\$L.\$L(\$L);\n",
                                 kotlin.run {
                                     if (interfaceMethod.executableElement.returnType.toString() != "void")
