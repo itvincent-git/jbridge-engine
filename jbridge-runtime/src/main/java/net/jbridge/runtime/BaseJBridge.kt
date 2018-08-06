@@ -11,6 +11,9 @@ import net.jbridge.common.JBridgeCallback
  * Created by zhongyongsheng on 2018/7/20.
  */
 abstract class BaseJBridge : IJBridge{
+    /**
+     * 上下文
+     */
     lateinit var bridgeContext: JBridgeContext
 
     //这个不能删除，实例对象后，传入到此，用于回调
@@ -18,7 +21,18 @@ abstract class BaseJBridge : IJBridge{
     @JBridgeField
     protected var jBridgeCallback: JBridgeCallback? = null
 
-    fun init(activity: Activity?, supportFragment: Fragment?, view: View?) {
+    //internal
+    internal fun init(activity: Activity?, supportFragment: Fragment?, view: View?) {
         bridgeContext = JBridgeContext(activity, supportFragment, view)
     }
+
+    /**
+     * js调用Bridge方法，无返回值
+     */
+    abstract fun onJsToBridge(msg: String?, params: MutableMap<String, Any>?, tag: Int?)
+
+    /**
+     * js调用Bridge方法，有返回值
+     */
+    abstract fun onJsToBridgeSync(msg: String?, params: MutableMap<String, Any>?, tag: Int?): Any
 }

@@ -47,7 +47,7 @@ class JBridgeProcessor : BasicAnnotationProcessor() {
             }
             .forEach {
                 try {
-                    JBridgeClassWriter(it).write(processingEnv)
+                    JBridgeClassWriter(it, compilerContext!!).write(processingEnv)
                     it.jBridge2JsMethods.forEach { getMethod: JBridge2JsGetMethod ->
                         JBridge2JsInterfaceWriter(getMethod.jBridge2JsData).write(processingEnv)
                     }

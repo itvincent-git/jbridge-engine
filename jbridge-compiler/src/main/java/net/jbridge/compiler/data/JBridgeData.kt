@@ -1,6 +1,7 @@
 package net.jbridge.compiler.data
 
 import com.squareup.javapoet.ClassName
+import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
 
@@ -11,7 +12,9 @@ import javax.lang.model.element.VariableElement
 class JBridgeData(val element: TypeElement,
                   val js2BridgeFields: List<Js2JBridgeField>,
                   val jBridge2JsMethods: List<JBridge2JsGetMethod>,
-                  val jBridgeCallbackField: VariableElement?) {
+                  val jBridgeCallbackField: VariableElement?,
+                  val onJsToBridge: ExecutableElement?,
+                  val onJsToBridgeSync: ExecutableElement?) {
 
     var implTypeName: ClassName
     var typeName: ClassName
@@ -23,6 +26,7 @@ class JBridgeData(val element: TypeElement,
     }
 
     override fun toString(): String {
-        return "JBridgeData(element=$element, js2BridgeFields=$js2BridgeFields, jBridge2JsMethods=$jBridge2JsMethods, jBridgeCallbackField=$jBridgeCallbackField, implTypeName=$implTypeName, typeName=$typeName)"
+        return "JBridgeData(element=$element, js2BridgeFields=$js2BridgeFields, jBridge2JsMethods=$jBridge2JsMethods, jBridgeCallbackField=$jBridgeCallbackField, onJsToBridge=$onJsToBridge, onJsToBridgeSync=$onJsToBridgeSync, implTypeName=$implTypeName, typeName=$typeName)"
     }
+
 }

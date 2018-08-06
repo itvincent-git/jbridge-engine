@@ -12,6 +12,7 @@ import net.jbridge.compiler.data.JBridgeData
 import net.jbridge.compiler.data.Js2JBridgeField
 import net.jbridge.util.JavaxUtil
 import javax.lang.model.element.ElementKind
+import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 
 /**
@@ -70,7 +71,24 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                     Js2JBridgeField(it.first, it.first.simpleName.toString(), js2bridgeData)
                 }
 
-        return JBridgeData(classElement, js2BridgeFields, jBridge2JsMethods, jBridgeCallbackField).apply {
+        val overrideMethods = allMembers
+                .filter({ element -> element.modifiers.contains(Modifier.ABSTRACT) && element.kind == ElementKind.METHOD })
+                .map {
+                    JavaxUtil.asExecutable(it)
+                }
+                .filter {
+                    val name = it.simpleName.toString()
+                    name == "onJsToBridge" || name == "onJsToBridgeSync"
+                }
+                .map { it.simpleName.toString() to it }
+                .toMap()
+
+        return JBridgeData(classElement,
+                js2BridgeFields,
+                jBridge2JsMethods,
+                jBridgeCallbackField,
+                overrideMethods["onJsToBridge"],
+                overrideMethods["onJsToBridgeSync"]).apply {
             compileContext.log.debug("JBridge process %s:%s", classElement.toString(), this)
         }
     }

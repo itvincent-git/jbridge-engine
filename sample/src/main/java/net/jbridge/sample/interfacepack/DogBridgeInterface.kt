@@ -9,4 +9,6 @@ import net.jbridge.annotation.Js2JBridge
 interface DogBridgeInterface {
 
     fun callDog(index: Int, name: String, times: Long)
+
+    fun callDogWithReturn(index: Int, name: String, times: Long): Int
 }
