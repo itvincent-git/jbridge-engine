@@ -25,6 +25,7 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
         addJBridgeToJsMethod(builder)
         createOnJsToBridgeMethod(builder, false)
         createOnJsToBridgeMethod(builder, true)
+        createInjectJsMethod(builder)
         return builder
     }
 
@@ -175,8 +176,53 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
 
     }
 
+    //生成getInjectJs实现
     private fun createInjectJsMethod(builder: TypeSpec.Builder) {
+        jbridgeData.getInjectJs?.let {
+            val methodBuilder = MethodSpec.overriding(jbridgeData.getInjectJs)
 
+            //生成switch
+            val codeBlock = CodeBlock.builder()
+            codeBlock.add("\$T sb = new \$T(\"window.nativeApp = {\\n\");\n", StringBuilder::class.java, StringBuilder::class.java)
+
+            var count = 0
+            for (getMethod in jbridgeData.js2BridgeFields) {
+                for (interfaceMethod in getMethod.js2JBridgeData.methods) {
+                    if (++count > 1) codeBlock.add("sb.append(\$S);\n", ",\n")
+
+                    val executableElement = interfaceMethod.executableElement
+
+                    //js映射java里的type名称
+                    val methodName = "${executableElement.simpleName}(" +
+                            interfaceMethod.parameters.filter { !it.isJBridgeContext && !it.isJBridgeToJsInterface }//不生成这些方法定义
+                                    .joinToString {
+                                        it.variableElement.toString()
+                                    } + ")"
+
+                    //参数,拼接
+                    val paramList = interfaceMethod.parameters
+                            .filter { !it.isJBridgeContext && !it.isJBridgeToJsInterface }//不生成这些方法定义
+                            .joinToString {
+                                it.variableElement.toString()
+                            }
+
+                    //参数{xxx:xxx}拼接
+                    val paramMapping = interfaceMethod.parameters
+                            .filter { !it.isJBridgeContext && !it.isJBridgeToJsInterface }//不生成这些方法定义
+                            .joinToString {
+                                "${it.variableElement}:${it.variableElement}"
+                            }
+                    codeBlock.add("sb.append(\$S);\n", "${executableElement.simpleName}:function($paramList) {\n")
+                    codeBlock.add("sb.append(\$S);\n", "yyrt.sendMessageToApp('${methodName}', {$paramMapping});\n")
+                    codeBlock.add("sb.append(\$S);\n", "}\n")
+                }
+            }
+            codeBlock.add("sb.append(\$S);\n", "};")
+            codeBlock.add("return sb.toString();\n")//有返回值要加上一个默认的return
+
+            methodBuilder.addCode(codeBlock.build())
+            builder.addMethod(methodBuilder.build())
+        }
     }
 
 

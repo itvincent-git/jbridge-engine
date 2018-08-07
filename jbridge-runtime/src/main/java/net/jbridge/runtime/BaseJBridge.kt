@@ -35,4 +35,9 @@ abstract class BaseJBridge : IJBridge{
      * js调用Bridge方法，有返回值
      */
     abstract fun onJsToBridgeSync(msg: String?, params: MutableMap<String, Any>?, tag: Int?): Any
+
+    /**
+     * 返回JsToBridge hook js
+     */
+    abstract fun getInjectJs(): String
 }

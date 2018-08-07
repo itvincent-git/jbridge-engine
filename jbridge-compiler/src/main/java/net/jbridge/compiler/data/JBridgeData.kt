@@ -14,7 +14,8 @@ class JBridgeData(val element: TypeElement,
                   val jBridge2JsMethods: List<JBridge2JsGetMethod>,
                   val jBridgeCallbackField: VariableElement?,
                   val onJsToBridge: ExecutableElement?,
-                  val onJsToBridgeSync: ExecutableElement?) {
+                  val onJsToBridgeSync: ExecutableElement?,
+                  val getInjectJs: ExecutableElement?) {
 
     var implTypeName: ClassName
     var typeName: ClassName
@@ -26,7 +27,7 @@ class JBridgeData(val element: TypeElement,
     }
 
     override fun toString(): String {
-        return "JBridgeData(element=$element, js2BridgeFields=$js2BridgeFields, jBridge2JsMethods=$jBridge2JsMethods, jBridgeCallbackField=$jBridgeCallbackField, onJsToBridge=$onJsToBridge, onJsToBridgeSync=$onJsToBridgeSync, implTypeName=$implTypeName, typeName=$typeName)"
+        return "JBridgeData(element=$element, js2BridgeFields=$js2BridgeFields, jBridge2JsMethods=$jBridge2JsMethods, jBridgeCallbackField=$jBridgeCallbackField, onJsToBridge=$onJsToBridge, onJsToBridgeSync=$onJsToBridgeSync, getInjectJs=$getInjectJs, implTypeName=$implTypeName, typeName=$typeName)"
     }
 
 }

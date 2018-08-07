@@ -1,7 +1,9 @@
 package net.jbridge.sample
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -10,6 +12,7 @@ import net.jbridge.sample.callback.WebViewCallback
 
 class MainActivity : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     @SuppressLint("JavascriptInterface")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +29,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //****define JavascriptInterface***
-        web_wv.addJavascriptInterface(MainJBridge.newInstance(this, null, web_wv, WebViewCallback(web_wv)), "nativeApp")
+        val mainJBridge = MainJBridge.newInstance(this, null, web_wv, WebViewCallback(web_wv))
+        web_wv.addJavascriptInterface(mainJBridge, "nativeApp")
         //*******
         web_wv.loadUrl("file:///android_asset/index.html")
+        web_wv.loadUrl("javascript:" + mainJBridge.getInjectJs())
     }
 }

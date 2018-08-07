@@ -78,7 +78,7 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                 }
                 .filter {
                     val name = it.simpleName.toString()
-                    name == "onJsToBridge" || name == "onJsToBridgeSync"
+                    name == "onJsToBridge" || name == "onJsToBridgeSync" || name == "getInjectJs"
                 }
                 .map { it.simpleName.toString() to it }
                 .toMap()
@@ -88,7 +88,8 @@ class JBridgeInterfaceProcessor internal constructor(internal var compileContext
                 jBridge2JsMethods,
                 jBridgeCallbackField,
                 overrideMethods["onJsToBridge"],
-                overrideMethods["onJsToBridgeSync"]).apply {
+                overrideMethods["onJsToBridgeSync"],
+                overrideMethods["getInjectJs"]).apply {
             compileContext.log.debug("JBridge process %s:%s", classElement.toString(), this)
         }
     }
