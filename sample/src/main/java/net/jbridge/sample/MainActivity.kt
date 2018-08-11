@@ -34,5 +34,9 @@ class MainActivity : AppCompatActivity() {
         //*******
         web_wv.loadUrl("file:///android_asset/index.html")
         web_wv.loadUrl("javascript:" + mainJBridge.getInjectJs())
+
+        onJsToBridge_btn.setOnClickListener {
+            mainJBridge.test_onJsToBridge()
+        }
     }
 }

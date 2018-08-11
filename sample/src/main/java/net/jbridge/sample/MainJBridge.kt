@@ -27,6 +27,11 @@ abstract class MainJBridge: BaseJBridge() {
     @JBridgeMethod
     abstract fun getToJsInterface(): ToJsInterface
 
+
+    fun test_onJsToBridge() {
+        onJsToBridge("callCat(index, name, times)", mutableMapOf("index" to 2011112222L), 0)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(activity: Activity?, supportFragment: Fragment?, view: View?, callback: JBridgeCallback): MainJBridge {

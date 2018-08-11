@@ -162,7 +162,21 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
                                     if (it.isJBridgeToJsInterface) {//处理JBridge2Js接口
                                         return@joinToString it.jBridgeToJsGetMethod?.element.toString()
                                     }
-                                    return@joinToString "(${it.variableElement.asType()})${paramMapName}.get(\"${it.variableElement.simpleName}\")"
+
+                                    val varType = it.variableElement.asType()
+                                    val convertType = varType.toString()
+                                    val codeTemplate = "net.jbridge.runtime.TypeConvertUtil.%s(${paramMapName}.get(\"${it.variableElement.simpleName}\"))"
+
+                                    when (convertType) {
+                                        "int" -> return@joinToString codeTemplate.format("safeObjectToInt")
+                                        "long" -> return@joinToString codeTemplate.format("safeObjectToLong")
+                                        "boolean" -> return@joinToString codeTemplate.format("safeObjectToBoolean")
+                                        "float" -> return@joinToString codeTemplate.format("safeObjectToFloat")
+                                        "double" -> return@joinToString codeTemplate.format("safeObjectToDouble")
+                                        "java.lang.String" -> return@joinToString codeTemplate.format("safeObjectToString")
+                                        else -> return@joinToString "(${convertType})${paramMapName}.get(\"${it.variableElement.simpleName}\")"
+                                    }
+
                                 })//param list
                         if (!isSyncReturn) codeBlock.add("\tbreak;\n")//没返回值要加上break
                 }
@@ -224,6 +238,5 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
             builder.addMethod(methodBuilder.build())
         }
     }
-
 
 }
