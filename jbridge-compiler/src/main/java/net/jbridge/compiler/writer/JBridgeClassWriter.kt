@@ -227,7 +227,16 @@ class JBridgeClassWriter(val jbridgeData: JBridgeData,
                                 "${it.variableElement}:${it.variableElement}"
                             }
                     codeBlock.add("sb.append(\$S);\n", "${executableElement.simpleName}:function($paramList) {\n")
-                    codeBlock.add("sb.append(\$S);\n", "yyrt.sendMessageToApp('${methodName}', {$paramMapping});\n")
+                    codeBlock.add("sb.append(\$S);\n",
+                            kotlin.run {
+                                if (interfaceMethod.executableElement.returnType.toString() != "void") {
+                                    "return yyrt.sendMessageToAppSync('${methodName}', {$paramMapping});\n"
+                                } else {
+                                    "yyrt.sendMessageToApp('${methodName}', {$paramMapping});\n"
+                                }
+                            }
+
+                    )
                     codeBlock.add("sb.append(\$S);\n", "}\n")
                 }
             }

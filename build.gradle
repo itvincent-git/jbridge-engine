@@ -13,7 +13,7 @@ buildscript {
         support_version = '27.1.1'
 
         // === release ==
-        release_version = '0.9.0'
+        release_version = '0.9.1'
         user_org = 'itvincent126'
         group_id = 'net.jbridge'
         url = 'https://github.com/itvincent-git/jbridge-engine'

@@ -18,6 +18,8 @@ class DogBridgeImpl: DogBridgeInterface {
     }
 
     override fun callDogWithReturn(index: Int, name: String, times: Long): Int {
-        return index + 100
+        var i = index + 100
+        Toast.makeText(SampleApplication.application, "callDogWithReturn $index return:$i", Toast.LENGTH_SHORT).show()
+        return i
     }
 }

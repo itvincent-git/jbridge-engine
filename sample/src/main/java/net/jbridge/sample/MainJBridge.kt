@@ -30,6 +30,7 @@ abstract class MainJBridge: BaseJBridge() {
 
     fun test_onJsToBridge() {
         onJsToBridge("callCat(index, name, times)", mutableMapOf("index" to 2011112222L), 0)
+        onJsToBridgeSync("callDogWithReturn(index, name, times)", mutableMapOf("index" to 1L), 0)
     }
 
     companion object {
