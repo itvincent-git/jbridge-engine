@@ -20,7 +20,7 @@ open class WebViewCallback(view: View) : JBridgeCallback {
 
     override fun eval(eval: String) {
         handler.post {
-            webView?.loadUrl(eval)
+            webView?.loadUrl("javascript:$eval")
         }
     }
 }

@@ -76,8 +76,9 @@ class JBridge2JsInterfaceWriter(val jbridge2jsData: JBridge2JsData) : JBridgeBas
 
     private fun addJBridge2JsMethodInner(methodSpec: MethodSpec.Builder, fieldName: String,
                                          executableElement: ExecutableElement, interfaceMethod: JBridge2JsInterfaceMethod) {
-        methodSpec.addStatement("\$L.eval(\"javascript:\$L(\$L)\")",
+        methodSpec.addStatement("\$L.eval(\"if(window.\$L) \$L(\$L)\")",
                 fieldName,
+                executableElement.simpleName.toString(),//methodName
                 executableElement.simpleName.toString(),//methodName
                 interfaceMethod.parameters.joinToString {
                     val type = it.asType()
